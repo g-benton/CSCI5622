@@ -10,13 +10,14 @@ RIGHT = "RIGHT"
 class prey:
     """ simple sheep class """
 
-    def __init__(self, location):
+    def __init__(self, location, prey_id):
 
         self.location = (location[0], location[1])
         self.prev_location = None
+        self.id = prey_id
         self.status = "ALIVE"
 
-    def act():
+    def act(self):
         """
         returns direction of next movement based on previous location
         """
@@ -37,8 +38,7 @@ class prey:
 
             return( random.choices(options, size = 1, p = probs)[0] )
 
-
-    def update_location(new_location):
+    def update_location(self, new_location):
         """
         takes in tuple of next location to move to
         updates the vars location and prev_location
@@ -48,4 +48,5 @@ class prey:
         self.prev_location = self.location
         self.location = new_location
 
-        return None
+    def die(self):
+        self.status = "DEAD"
