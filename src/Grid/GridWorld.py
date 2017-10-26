@@ -2,10 +2,12 @@
 and updates the grid.
 """
 
+from Grid2D import Grid2D
+
 class GridWorld:
 
     def __init__(self, grid_dim):
-        self.grid = Grid(grid_dim)
+        self.grid = Grid2D(grid_dim)
         self.agents = []
         self.npcs = []
 
@@ -28,7 +30,7 @@ class GridWorld:
         while condition():
             for agent in self.agents:
                 action = agent.act()
-                new_posn = self.grid.update_position(agent, action)
+                new_posn = self.grid.move_actor(agent, action, can_overlap=True)
                 agent.update_position(new_posn)
                 # Give feeback about the reward stuff here.
             for npc in self.npcs:
