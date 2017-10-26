@@ -39,6 +39,19 @@ class Grid2D:
         if new_posn is not None:
             self._update_actor_posn(actor, new_posn, curr_posn)
 
+    def remove_actor(self, actor_id):
+        """Remove an actor from the grid.
+        Args:
+            actor_id: The id of the actor to be removed.
+        Returns: True if able to remove the actor.
+        """
+        if actor_id not in self.actor_to_posn:
+            return False
+        actor_posn = self.actor_to_posn[actor_id]
+        del self.actor_to_posn[actor_id]
+        self.posn_to_actor[actor_posn].remove(actor_id)
+
+
     def _update_actor_posn(self, actor, new_posn, old_posn=None):
         """Update the actor's position on the Grid.
         Args:

@@ -5,4 +5,8 @@ NORTH = 'north'
 SOUTH = 'south'
 LEFT = 'left'
 RIGHT = 'right'
-NA = 'no_action
+NA = 'no_action'
+
+# Actor Names
+PREDATOR = 'Predator'
+PREY = 'Prey'
