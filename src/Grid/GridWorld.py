@@ -25,8 +25,8 @@ class GridWorld:
             start_position: The starting position on the grid as Tuple (x, y).
         """
         if actor.name not in self.actors:
-            self.actors[actor.name] = {}
-        self.actors[actor.name][actor.actor_id] = actor
+            self.actors[actor.get_name()] = {}
+        self.actors[actor.name][actor.get_actor_id()] = actor
         self.grid.add_actor(actor, start_position)
 
     def remove_actor(self, actor_name, actor_id):
@@ -40,7 +40,9 @@ class GridWorld:
 
     def run_simulation(self, condition):
         """Runs the simulations while the condtion is true."""
-        while condition():
+        # TODO: Figure out what info should be passed to condition, none needed
+        # for now.
+        while condition.is_running(None):
             self._step()
 
     def _step(self):
@@ -49,7 +51,5 @@ class GridWorld:
             for actor in self.actors[actor_type].values():
                 action = actor.act()
                 new_posn = self.grid.move_actor(actor, action)
-                actor.update_position(new_posn)
+                actor.update_posn(new_posn)
                 # Give actor feedback here.
-
-

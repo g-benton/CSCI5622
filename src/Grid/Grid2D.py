@@ -33,11 +33,12 @@ class Grid2D:
         Returns: The new position that the actor ended up at and the ids of the
             actors at the new location.
         """
-        curr_posn = self.actor_to_posn[actor.actor_id]
+        curr_posn = self.actor_to_posn[actor.get_actor_id()]
         new_posn = self._get_new_posn(curr_posn, action)
         # TODO: Add stuff here checking to see if we can overlap or not.
         if new_posn is not None:
             self._update_actor_posn(actor, new_posn, curr_posn)
+        return new_posn
 
     def remove_actor(self, actor_id):
         """Remove an actor from the grid.
@@ -62,13 +63,13 @@ class Grid2D:
                 first time.
         """
         if self._is_valid_posn(new_posn):
-            self.actor_to_posn[actor.agent_id] = new_posn
+            self.actor_to_posn[actor.get_actor_id()] = new_posn
             # Add to new position.
             if new_posn not in self.posn_to_actor:
                 self.posn_to_actor[new_posn] = []
-            self.posn_to_actor[new_posn].append(actor.actor_id)
+            self.posn_to_actor[new_posn].append(actor.get_actor_id())
             # Remove from old position.
-            self.posn_to_actor[new_posn].remove(actor.actor_id)
+            self.posn_to_actor[new_posn].remove(actor.get_actor_id())
 
     def _get_new_posn(self, curr_posn, action):
         """Return a new position based on the action taken.
@@ -83,9 +84,9 @@ class Grid2D:
             new_posn = (curr_posn[0], curr_posn[1] + 1)
         elif action == SOUTH:
             new_posn = (curr_posn[0], curr_posn[1] - 1)
-        elif action == LEFT:
+        elif action == WEST:
             new_posn = (curr_posn[0] - 1, curr_posn[1])
-        elif action == RIGHT:
+        elif action == EAST:
             new_posn = (curr_posn[0] + 1, curr_posn[1])
         elif action == NA:
             new_posn = curr_posn

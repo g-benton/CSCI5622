@@ -39,3 +39,19 @@ class Actor:
             feedback: TBD
         """
         pass
+
+    def get_actor_id(self):
+        """Returns the actor id."""
+        return self.actor_id
+
+    def get_name(self):
+        """Returns the name."""
+        return self.name
+
+    def get_can_overlap(self):
+        """Returns whether agent can be overlapped."""
+        return self.can_overlap
+
+    def get_posn(self):
+        """Returns the position."""
+        return self.posn
