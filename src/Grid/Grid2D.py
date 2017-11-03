@@ -22,8 +22,11 @@ class Grid2D:
             start_position: Tuple of the location (x, y).
         Returns: True if we succesfully added Agent, False otherwise.
         """
-        # TODO: Check to see if the actor can be overlapped.
+        if not actor.get_can_overlap():
+            if start_position in self.posn_to_actor:
+                return False
         self._update_actor_posn(actor, start_position)
+        return True
 
     def move_actor(self, actor, action):
         """Move actor in the grid.
@@ -35,7 +38,9 @@ class Grid2D:
         """
         curr_posn = self.actor_to_posn[actor.get_actor_id()]
         new_posn = self._get_new_posn(curr_posn, action)
-        # TODO: Add stuff here checking to see if we can overlap or not.
+        if not actor.get_can_overlap():
+            if new_posn in self.posn_to_actor:
+                return curr_posn
         if new_posn is not None:
             self._update_actor_posn(actor, new_posn, curr_posn)
         return new_posn
@@ -51,7 +56,6 @@ class Grid2D:
         actor_posn = self.actor_to_posn[actor_id]
         del self.actor_to_posn[actor_id]
         self.posn_to_actor[actor_posn].remove(actor_id)
-
 
     def _update_actor_posn(self, actor, new_posn, old_posn=None):
         """Update the actor's position on the Grid.
@@ -69,7 +73,11 @@ class Grid2D:
                 self.posn_to_actor[new_posn] = []
             self.posn_to_actor[new_posn].append(actor.get_actor_id())
             # Remove from old position.
-            self.posn_to_actor[new_posn].remove(actor.get_actor_id())
+            if old_posn is not None:
+                self.posn_to_actor[old_posn].remove(actor.get_actor_id())
+                # If there are no longer any actors in that position delte.
+                if len(self.posn_to_actor[old_posn]) == 0:
+                    del self.posn_to_actor[old_posn]
 
     def _get_new_posn(self, curr_posn, action):
         """Return a new position based on the action taken.
