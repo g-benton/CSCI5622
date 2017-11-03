@@ -23,7 +23,7 @@ class Prey(Actor):
         # possible movements
         options = [NORTH, SOUTH, WEST, EAST]
         prob_wght = 0.2
-        print(self.posn)
+        print('Prey Current position:', self.posn)
 
         if(self.prev_posn is None):
             # random choice if first move
