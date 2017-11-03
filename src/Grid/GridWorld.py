@@ -2,37 +2,54 @@
 and updates the grid.
 """
 
+from Grid2D import Grid2D
+
 class GridWorld:
 
-    def __init__(self, grid_dim):
-        self.grid = Grid(grid_dim)
-        self.agents = []
-        self.npcs = []
+    def __init__(self, grid_dim, actor_precedences):
+        """Constructor.
+        Args:
+            grid_dim: Tuple of the grid size (x, y).
+            actor_precedences: List of the actor names so we know precedences
+                of which actors go first on discrete time step.
+        """
+        self.grid = Grid2D(grid_dim)
+        self.actor_precedences = actor_precedences
+        # Map actor name -> {actor id -> actor object}.
+        self.actors = {}
 
-    def add_agent(self, agent, start_position):
-        self.agents.append(agent)
-        self.grid.add_actor(agent, start_position)
+    def add_actor(self, actor, start_position):
+        """Add actor to our GridWorld.
+        Args:
+            actor: Actor object we wish to add to game world.
+            start_position: The starting position on the grid as Tuple (x, y).
+        """
+        if actor.name not in self.actors:
+            self.actors[actor.get_name()] = {}
+        self.actors[actor.name][actor.get_actor_id()] = actor
+        self.grid.add_actor(actor, start_position)
 
-    def add_npc(self, npc, start_position):
-        self.npcs.append(npc)
-        self.grid.add_actor(npc, start_position)
-
-    def remove_agent(self, agent):
-        self.agents.remove(agent)
-
-    def remove_npc(self, npc):
-        self.npc.remove(npc)
+    def remove_actor(self, actor_name, actor_id):
+        """Remove an actor given their name and id.
+        Args:
+            actor_name: The name of the actor type.
+            actor_id: The id of the actor to remove.
+        """
+        self.grid.remove_actor(actor_id)
+        del self.actors[actor_name][actor_id]
 
     def run_simulation(self, condition):
         """Runs the simulations while the condtion is true."""
-        while condition():
-            for agent in self.agents:
-                action = agent.act()
-                new_posn = self.grid.update_position(agent, action)
-                agent.update_position(new_posn)
-                # Give feeback about the reward stuff here.
-            for npc in self.npcs:
-                action = npc.act()
-                new_posn = self.grid.update_position(npc, action)
-                npc.update_position(new_posn)
+        # TODO: Figure out what info should be passed to condition, none needed
+        # for now.
+        while condition.is_running(None):
+            self._step()
 
+    def _step(self):
+        """Do one time step in our simulation."""
+        for actor_type in self.actor_precedences:
+            for actor in self.actors[actor_type].values():
+                action = actor.act()
+                new_posn = self.grid.move_actor(actor, action)
+                actor.update_posn(new_posn)
+                # Give actor feedback here.
