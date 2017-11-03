@@ -17,9 +17,11 @@ class Actor:
         self.name = name
         self.can_overlap = can_overlap
 
-    def act(self):
+    def act(self, observer):
         """Method that makes the actor act, does nothing here, should be
         implemented in subclasses.
+        Args:
+            observer: GridObserver object that gives details of Grid.
         Returns: No Action constant.
         """
         return NA
@@ -32,11 +34,10 @@ class Actor:
         self.posn = posn
 
     # TODO: Figure out best way to give feedback to actors.
-    def get_feedback(self, feedback):
-        """Give feedback to the actor, does nothing here, should be implemented
-        in subclasses.
+    def give_feedback(self, observer):
+        """Update the actor with feedback.
         Args:
-            feedback: TBD
+            observer: GridObserver object to give details of the grid.
         """
         pass
 

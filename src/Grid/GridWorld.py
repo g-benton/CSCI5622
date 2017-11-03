@@ -3,6 +3,7 @@ and updates the grid.
 """
 
 from Grid2D import Grid2D
+from GridObserver import GridObserver
 
 class GridWorld:
 
@@ -14,6 +15,7 @@ class GridWorld:
                 of which actors go first on discrete time step.
         """
         self.grid = Grid2D(grid_dim)
+        self.observer = GridObserver(self.grid)
         self.actor_precedences = actor_precedences
         # Map actor name -> {actor id -> actor object}.
         self.actors = {}
@@ -49,7 +51,7 @@ class GridWorld:
         """Do one time step in our simulation."""
         for actor_type in self.actor_precedences:
             for actor in self.actors[actor_type].values():
-                action = actor.act()
+                action = actor.act(self.observer)
                 new_posn = self.grid.move_actor(actor, action)
                 actor.update_posn(new_posn)
                 # Give actor feedback here.
