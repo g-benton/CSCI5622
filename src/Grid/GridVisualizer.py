@@ -11,7 +11,7 @@ from GridConstants import *
 
 # internal functions
 
-class graph_vizualization:
+class GridVisualizer:
 
     def __init__(self, board_size_, frames_, interval_, location_info_):
         start_grid = ( np.array([[0 for i in range(board_size_)]
@@ -29,7 +29,6 @@ class graph_vizualization:
         self.frames = frames_
         self.interval = interval_
         self.frame = 0
-        # print(self.location_info)
 
     # example updating function
     def update_grid(self, i):#, location_info, grid_mat):
@@ -76,6 +75,6 @@ if __name__ == '__main__':
     tester = [tester1, tester2, tester3]
 
 
-    viz = graph_vizualization(board_size_ = board_size, frames_ = len(tester) - 1,
-                              location_info_= tester, interval_= 1000)
+    viz = GridVisualizer(board_size_ = board_size, frames_ = len(tester) - 1,
+                            location_info_= tester, interval_= 1000)
     viz.display()
