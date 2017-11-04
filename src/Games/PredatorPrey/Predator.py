@@ -42,7 +42,7 @@ class Predator(Actor):
 
     def act(self, observer):
 
-        state = self.get_state(self,observer)
+        state = self.get_state(observer)
         q = self.q_mat[state]
         if random.random() < self.epsilon:
             action_ind = random.choice(range(len(q)),p = np.divide(q,sum(q)))
@@ -56,7 +56,7 @@ class Predator(Actor):
         :param observer: the observer class
         :return: nada - just updates the Q matrix
         """
-        state = self.get_state(self,observer)
+        state = self.get_state(observer)
 
         if state == ((2*self.dim-1)^2-1)/2:
             r = 1000.0
@@ -65,6 +65,12 @@ class Predator(Actor):
 
         self.q_mat[self.prev_state] = (1-self.alpha)*self.q_mat[self.prev_state] + \
                                       self.alpha*(r + self.gamma*max(self.q_mat[state]))
+
+    def write_q(self,outfile):
+        np.save(outfile, self.q_mat)
+
+    def read_q(self,outfile):
+        self.q_mat = np.load(outfile)
 
 
 if __name__ == '__main__':
