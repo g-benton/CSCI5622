@@ -2,8 +2,11 @@
 and updates the grid.
 """
 
+import copy
+
 from Grid2D import Grid2D
 from GridObserver import GridObserver
+from GridVisualizer import GridVisualizer
 
 class GridWorld:
 
@@ -15,10 +18,10 @@ class GridWorld:
                 of which actors go first on discrete time step.
         """
         self.grid = Grid2D(grid_dim)
-        self.observer = GridObserver(self.grid)
-        self.actor_precedences = actor_precedences
         # Map actor name -> {actor id -> actor object}.
         self.actors = {}
+        self.observer = GridObserver(self.grid, self.actors)
+        self.actor_precedences = actor_precedences
 
     def add_actor(self, actor, start_position):
         """Add actor to our GridWorld.
@@ -40,12 +43,25 @@ class GridWorld:
         self.grid.remove_actor(actor_id)
         del self.actors[actor_name][actor_id]
 
-    def run_simulation(self, condition):
-        """Runs the simulations while the condtion is true."""
+    def run_simulation(self, condition, visualize=False):
+        """Runs the simulations while the condtion is true.
+        Args:
+            condition: Condition object that tells how long to train.
+            visualize: Whether to visualize the output.
+        """
         # TODO: Figure out what info should be passed to condition, none needed
         # for now.
+        if visualize:
+            history = []
         while condition.is_running(None):
             self._step()
+            if visualize:
+                history.append(self._history_snapshot())
+        # The simulation has ended, now simulate!
+        if visualize:
+            viz = GridVisualizer(self.grid.grid_dim[0], len(history) - 1,
+                                 1000, history)
+            viz.display()
 
     def _step(self):
         """Do one time step in our simulation."""
@@ -55,3 +71,14 @@ class GridWorld:
                 new_posn = self.grid.move_actor(actor, action)
                 actor.update_posn(new_posn)
                 # Give actor feedback here.
+
+    def _history_snapshot(self):
+        """Take a snapshot of the current state of the actors with their posns.
+        Returns: Dict name -> {id -> (x, y)}
+        """
+        snapshot = {}
+        for name, inner in self.actors.items():
+            snapshot[name] = {}
+            for actor_id, actor in inner.items():
+                snapshot[name][actor_id] = actor.posn
+        return snapshot

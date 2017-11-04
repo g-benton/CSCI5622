@@ -38,14 +38,37 @@ class Grid2D:
         """
         curr_posn = self.actor_to_posn[actor.get_actor_id()]
         new_posn = self._get_new_posn(curr_posn, action)
-        if new_posn is None:
-            new_posn = curr_posn
-        if not actor.get_can_overlap():
+        if not actor.get_can_overlap(): # prey tries to move to occupied space
             if new_posn in self.posn_to_actor:
                 return curr_posn
-        if new_posn is not None:
+        if new_posn is not None: # predator is moving onto occupied space
+            # TODO: validate movement based on predator consuming prey
+            new_posn = self.check_movement_overlap(actor = actor,
+                                                   new_posn = new_posn)
             self._update_actor_posn(actor, new_posn, curr_posn)
+        if new_posn is None: # thing doesn't move
+            new_posn = curr_posn
         return new_posn
+
+    def check_movement_overlap(self, actor, new_posn):
+        """
+        Checks movements to determine if a predator is moving onto a prey
+        or if a prey is attempting to move onto an occupied space
+        """
+        if actor.can_overlap:
+            # print(self.posn_to_actor[new_posn])
+            # predator class #
+            if new_posn in self.posn_to_actor:
+                for actor in self.posn_to_actor[new_posn]:
+                    if actor.can_overlap:
+                        pred_in_new_posn = True
+
+                if pred_in_new_posn:
+                    # can't move into new space #
+                    new_posn = None
+                    # artificial line #
+        return(new_posn)
+
 
     def remove_actor(self, actor_id):
         """Remove an actor from the grid.
@@ -73,10 +96,10 @@ class Grid2D:
             # Add to new position.
             if new_posn not in self.posn_to_actor:
                 self.posn_to_actor[new_posn] = []
-            self.posn_to_actor[new_posn].append(actor.get_actor_id())
+            self.posn_to_actor[new_posn].append(actor)
             # Remove from old position.
             if old_posn is not None:
-                self.posn_to_actor[old_posn].remove(actor.get_actor_id())
+                self.posn_to_actor[old_posn].remove(actor)
                 # If there are no longer any actors in that position delte.
                 if len(self.posn_to_actor[old_posn]) == 0:
                     del self.posn_to_actor[old_posn]
