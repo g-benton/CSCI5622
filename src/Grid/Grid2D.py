@@ -67,6 +67,7 @@ class Grid2D:
                     # can't move into new space #
                     new_posn = None
                     # artificial line #
+    
         return(new_posn)
 
 
