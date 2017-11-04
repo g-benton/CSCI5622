@@ -66,7 +66,7 @@ class Grid2D:
                 if pred_in_new_posn:
                     # can't move into new space #
                     new_posn = None
-
+                    # artificial line #
         return(new_posn)
 
 
