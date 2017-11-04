@@ -67,11 +67,6 @@ class Grid2D:
                     # can't move into new space #
                     new_posn = None
 
-        # else:
-        #     # prey class #
-        #     if new_posn in self.posn_to_actor:
-        #         new_posn = None
-
         return(new_posn)
 
 
