@@ -13,7 +13,7 @@ def set_up():
     """Set up the world to run.
     Returns: GridWorld object.
     """
-    world = GridWorld((5, 5), [PREY])
+    world = GridWorld((5, 5))
     sheep = Prey(1, (2, 2))
     world.add_actor(sheep, (2, 2))
     return world
