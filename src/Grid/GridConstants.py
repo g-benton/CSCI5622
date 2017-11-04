@@ -3,8 +3,8 @@
 # Actions
 NORTH = 'north'
 SOUTH = 'south'
-WEST = 'west'
 EAST = 'east'
+WEST = 'west'
 NA = 'no_action'
 
 # Actor Names

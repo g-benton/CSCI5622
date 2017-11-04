@@ -1,4 +1,3 @@
-
 import random
 import numpy as np
 import sys
@@ -24,7 +23,7 @@ class Prey(Actor):
 
         # possible movements
         options = [NORTH, SOUTH, WEST, EAST]
-        prob_wght = 0.2
+        prob_wght = 0.1
 
         if(self.prev_posn is None):
             # random choice if first move
