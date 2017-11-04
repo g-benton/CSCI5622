@@ -15,10 +15,10 @@ class GridWorld:
                 of which actors go first on discrete time step.
         """
         self.grid = Grid2D(grid_dim)
-        self.observer = GridObserver(self.grid)
-        self.actor_precedences = actor_precedences
         # Map actor name -> {actor id -> actor object}.
         self.actors = {}
+        self.observer = GridObserver(self.grid, self.actors)
+        self.actor_precedences = actor_precedences
 
     def add_actor(self, actor, start_position):
         """Add actor to our GridWorld.
