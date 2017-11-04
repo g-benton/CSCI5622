@@ -38,6 +38,8 @@ class Grid2D:
         """
         curr_posn = self.actor_to_posn[actor.get_actor_id()]
         new_posn = self._get_new_posn(curr_posn, action)
+        if new_posn is None:
+            new_posn = curr_posn
         if not actor.get_can_overlap():
             if new_posn in self.posn_to_actor:
                 return curr_posn

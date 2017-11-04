@@ -15,15 +15,17 @@ class Prey(Actor):
         self.status = "ALIVE"
         super().__init__(actor_id, start_posn, PREY, True)
 
-    def act(self):
-        """
-        returns direction of next movement based on previous posn
+    def act(self, observer):
+        """Give a next action.
+        Args:
+            observer: The GridObserver object (not needed for right now).
+        Returns: Direction of next movement based on previous posn
         """
 
         # possible movements
         options = [NORTH, SOUTH, WEST, EAST]
         prob_wght = 0.2
-        print(self.posn)
+        print('Prey Current position:', self.posn)
 
         if(self.prev_posn is None):
             # random choice if first move
