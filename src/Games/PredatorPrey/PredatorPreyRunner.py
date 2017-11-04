@@ -22,7 +22,7 @@ def run_sim():
     """Run the simulation."""
     world = set_up()
     condition = TimeLimitConditions(10)
-    world.run_simulation(condition)
+    world.run_simulation(condition, True)
 
 if __name__ == '__main__':
     run_sim()
