@@ -36,38 +36,45 @@ class Grid2D:
         Returns: The new position that the actor ended up at and the ids of the
             actors at the new location.
         """
+
         curr_posn = self.actor_to_posn[actor.get_actor_id()]
         new_posn = self._get_new_posn(curr_posn, action)
+
+        # print("new_posn", new_posn)
+        # print(self.posn_to_actor)
+        # print("T/F", new_posn in self.posn_to_actor)
+        # print("can overlap", actor.get_can_overlap())
         if not actor.get_can_overlap(): # prey tries to move to occupied space
             if new_posn in self.posn_to_actor:
                 return curr_posn
         if new_posn is not None: # predator is moving onto occupied space
             # TODO: validate movement based on predator consuming prey
             new_posn = self.check_movement_overlap(actor = actor,
-                                                   new_posn = new_posn)
+                                                   new_posn = new_posn,
+                                                   curr_posn = curr_posn)
             self._update_actor_posn(actor, new_posn, curr_posn)
         if new_posn is None: # thing doesn't move
             new_posn = curr_posn
+
         return new_posn
 
-    def check_movement_overlap(self, actor, new_posn):
+    def check_movement_overlap(self, actor, new_posn, curr_posn):
         """
         Checks movements to determine if a predator is moving onto a prey
         or if a prey is attempting to move onto an occupied space
         """
-        if actor.can_overlap:
-            # print(self.posn_to_actor[new_posn])
+        pred_in_new_posn = False
+        if actor.get_can_overlap():
             # predator class #
             if new_posn in self.posn_to_actor:
-                for actor in self.posn_to_actor[new_posn]:
-                    if actor.can_overlap:
+                for posn_actor in self.posn_to_actor[new_posn]:
+                    if posn_actor.get_can_overlap():
                         pred_in_new_posn = True
 
                 if pred_in_new_posn:
                     # can't move into new space #
-                    new_posn = None
-                    # artificial line #
-    
+                    new_posn = curr_posn
+
         return(new_posn)
 
 

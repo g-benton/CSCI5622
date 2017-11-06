@@ -12,7 +12,7 @@ class Predator(Actor):
 
     def __init__(self, actor_id, start_posn, dim, epsilon = None):
 
-        super().__init__(actor_id, start_posn, PREDATOR, False)
+        super().__init__(actor_id, start_posn, PREDATOR, True)
 
         # q_mat has (2n-1)^2 rows and 5 columns, since there are (2n-1)^2 different states
         # and 5 different actions for the actor to take

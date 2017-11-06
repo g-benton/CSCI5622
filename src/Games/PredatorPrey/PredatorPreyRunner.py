@@ -3,7 +3,7 @@
 import sys
 
 from Prey import Prey
-
+from Predator import Predator
 sys.path.append('../../Grid')
 from GridConstants import *
 from GridWorld import GridWorld
@@ -13,15 +13,18 @@ def set_up():
     """Set up the world to run.
     Returns: GridWorld object.
     """
-    world = GridWorld((5, 5), [PREY])
-    sheep = Prey(1, (2, 2))
-    world.add_actor(sheep, (2, 2))
+    grid_dim = 10
+    world = GridWorld((grid_dim, grid_dim), [PREY])
+    sheep = Prey(1, (4, 5))
+    wolf = Predator(2, (5, 5), dim = grid_dim)
+    world.add_actor(sheep, (4, 5))
+    world.add_actor(wolf, (5, 5))
     return world
 
 def run_sim():
     """Run the simulation."""
     world = set_up()
-    condition = TimeLimitConditions(10)
+    condition = TimeLimitConditions(10000)
     world.run_simulation(condition, True)
 
 if __name__ == '__main__':

@@ -12,7 +12,7 @@ class Prey(Actor):
     def __init__(self, actor_id, start_posn):
         self.prev_posn = None
         self.status = "ALIVE"
-        super().__init__(actor_id, start_posn, PREY, True)
+        super().__init__(actor_id, start_posn, PREY, False)
 
     def act(self, observer):
         """Give a next action.
@@ -23,7 +23,7 @@ class Prey(Actor):
 
         # possible movements
         options = [NORTH, SOUTH, WEST, EAST]
-        prob_wght = 0.2
+        prob_wght = 0.1
 
         if(self.prev_posn is None):
             # random choice if first move
@@ -31,12 +31,12 @@ class Prey(Actor):
         else:
             # augment probabilities based on previous posn
             tuple_diff = tuple(np.subtract(self.posn, self.prev_posn))
-            tuple_diff = (0, 1)
+            # tuple_diff = (0, 1)
             probs = [0.25 + prob_wght*tuple_diff[1],
                      0.25 - prob_wght*tuple_diff[1],
                      0.25 - prob_wght*tuple_diff[0],
                      0.25 + prob_wght*tuple_diff[0]]
-
+            # print(probs)
             return np.random.choice(options, size=1, p=probs)[0]
 
     def update_posn(self, new_posn):
