@@ -74,7 +74,7 @@ class Grid2D:
                 if pred_in_new_posn:
                     # can't move into new space #
                     new_posn = curr_posn
-                    # why is this not working #
+                    
         return(new_posn)
 
 
