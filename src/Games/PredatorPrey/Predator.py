@@ -36,18 +36,18 @@ class Predator(Actor):
         :return: the index in the Q matrix that corresponds to the state of the predator. Note that the index for the
          q-matrix is the distance vector from base (2*dim - 1) to base 10
         """
-        distance = np.linalg.norm(np.subtract(self.posn, observer.get_closest(PREY)), ord=1)
+        distance = np.linalg.norm(np.subtract(self.posn, observer.get_closest(PREY, self.posn)), ord=1)
         distance = np.add(distance, (self.dim - 1, self.dim - 1))
-        return np.floor(distance[1] / float(2 * self.dim - 1)) + distance[0] % float(2 * self.dim - 1)
+        return np.floor(distance[1] / float(2 * self.dim - 1)) + distance[0] % float(2 * self.dim - 1) - 1
 
     def act(self, observer):
+        state = self.get_state(observer)
+        q = self.q_mat[int(state)]
 
-        state = self.get_state(self,observer)
-        q = self.q_mat[state]
         if random.random() < self.epsilon:
-            action_ind = random.choice(range(len(q)),p = np.divide(q,sum(q)))
+            action_ind = random.choice(range(len(q)),p = np.array(np.divide(q,sum(q))))
         else:
-            action_ind = q.index(max(q))
+            action_ind = q.argmax()
         self.prev_state = state
         return self.actions[action_ind]
 
