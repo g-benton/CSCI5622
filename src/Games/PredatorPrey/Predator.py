@@ -68,7 +68,7 @@ class Predator(Actor):
         :param observer: the observer class
         :return: nada - just updates the Q matrix
         """
-        state = self.get_state(self,observer)
+        state = self.get_state(observer)
 
         print("hi")
 
@@ -79,9 +79,15 @@ class Predator(Actor):
 
         self.q_mat[self.prev_state] = (1-self.alpha)*self.q_mat[self.prev_state] + \
                                       self.alpha*(r + self.gamma*max(self.q_mat[state]))
-        self.q_mat[self.prev_state] = np.add(self.q_mat[self.prev_state],
-                                    np.mat([[1]*5]))
+        # self.q_mat[self.prev_state] = np.add(self.q_mat[self.prev_state],
+        #                             np.mat([[1]*5]))
         print(self.q_mat[self.prev_state])
+
+    def write_q(self,outfile):
+        np.save(outfile, self.q_mat)
+
+    def read_q(self,outfile):
+        self.q_mat = np.load(outfile)
 
 if __name__ == '__main__':
     test = np.matrix(5*[[0]*3])

@@ -11,7 +11,7 @@ from GridConstants import *
 
 class GridWorld:
 
-    def __init__(self, grid_dim, actor_precedences):
+    def __init__(self, grid_dim):
         """Constructor.
         Args:
             grid_dim: Tuple of the grid size (x, y).
@@ -22,7 +22,6 @@ class GridWorld:
         # Map actor name -> {actor id -> actor object}.
         self.actors = {}
         self.observer = GridObserver(self.grid, self.actors)
-        self.actor_precedences = actor_precedences
 
     def add_actor(self, actor, start_position):
         """Add actor to our GridWorld.
@@ -34,15 +33,6 @@ class GridWorld:
             self.actors[actor.get_name()] = {}
         self.actors[actor.name][actor.get_actor_id()] = actor
         self.grid.add_actor(actor, start_position)
-
-    def remove_actor(self, actor_name, actor_id):
-        """Remove an actor given their name and id.
-        Args:
-            actor_name: The name of the actor type.
-            actor_id: The id of the actor to remove.
-        """
-        self.grid.remove_actor(actor_id)
-        del self.actors[actor_name][actor_id]
 
     def run_simulation(self, condition, visualize=False):
         """Runs the simulations while the condtion is true.
@@ -66,17 +56,23 @@ class GridWorld:
 
     def _step(self):
         """Do one time step in our simulation."""
-        for actor_type in self.actor_precedences:
+        # Have all the actors act.
+        for actor_type in self.actors.keys():
             for actor in self.actors[actor_type].values():
                 action = actor.act(self.observer)
                 new_posn = self.grid.move_actor(actor, action)
                 actor.update_posn(new_posn)
-                # Give actor feedback here.
-        # print(self.actors[PREDATOR])
-        # for actor in self.actors[PREDATOR]:
-        #     # if actor.get_can_overlap():
-        #     print(actor)
-        #     actor.give_feedback(self.observer)
+        # Have all actors get feeback on their actions.
+        for actor_type in self.actors.keys():
+            for actor in self.actors[actor_type].values():
+                actor.give_feedback(self.observer)
+        # Remove the actors that have been overlapped.
+        removed = self.grid.remove_overlapped()
+        for rem in removed:
+            for actor_dic in self.actors.values():
+                if rem in actor_dic:
+                    del actor_dic[rem]
+
 
     def _history_snapshot(self):
         """Take a snapshot of the current state of the actors with their posns.

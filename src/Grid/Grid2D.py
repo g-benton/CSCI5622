@@ -12,7 +12,7 @@ class Grid2D:
         self.grid_dim = grid_dim
         # Maps actor's unique ID to location on the grid.
         self.actor_to_posn = {}
-        # Maps tuple position to a list of actor IDs.
+        # Maps tuple position to a list of actor objects.
         self.posn_to_actor = {}
 
     def add_actor(self, actor, start_position):
@@ -74,11 +74,24 @@ class Grid2D:
                 if pred_in_new_posn:
                     # can't move into new space #
                     new_posn = curr_posn
-                    
+
         return(new_posn)
 
+    def remove_overlapped(self):
+        """Remove any actors that are overlapped.
+        Returns: List of actor ids that have been overlapped.
+        """
+        removed = []
+        for actors in self.posn_to_actor.values():
+            if len(actors) > 1:
+                for actor in actors:
+                    if not actor.get_can_overlap():
+                        a_id = actor.get_actor_id()
+                        self._remove_actor(a_id)
+                        removed.append(a_id)
+        return removed
 
-    def remove_actor(self, actor_id):
+    def _remove_actor(self, actor_id):
         """Remove an actor from the grid.
         Args:
             actor_id: The id of the actor to be removed.
