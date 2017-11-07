@@ -14,7 +14,7 @@ def set_up():
     Returns: GridWorld object.
     """
     grid_dim = 10
-    world = GridWorld((grid_dim, grid_dim), [PREY, PREDATOR])
+    world = GridWorld((grid_dim, grid_dim))
     sheep = Prey(1, (4, 5))
     wolf = Predator(2, (5, 5), dim = grid_dim)
     world.add_actor(sheep, (4, 5))

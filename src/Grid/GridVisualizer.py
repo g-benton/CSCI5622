@@ -76,5 +76,5 @@ if __name__ == '__main__':
 
 
     viz = GridVisualizer(board_size_ = board_size, frames_ = len(tester) - 1,
-                            location_info_= tester, interval_= 1000)
+                            location_info_= tester, interval_= 10)
     viz.display()

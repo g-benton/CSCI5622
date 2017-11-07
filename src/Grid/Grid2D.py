@@ -97,11 +97,18 @@ class Grid2D:
             actor_id: The id of the actor to be removed.
         Returns: True if able to remove the actor.
         """
+
         if actor_id not in self.actor_to_posn:
             return False
         actor_posn = self.actor_to_posn[actor_id]
         del self.actor_to_posn[actor_id]
-        self.posn_to_actor[actor_posn].remove(actor_id)
+        for actor in self.posn_to_actor[actor_posn]:
+            print("HERE")
+            print(actor)
+            if actor.get_actor_id() == actor_id:
+                print("HIT")
+                self.posn_to_actor[actor_posn].remove(actor)
+                print("HIT")
 
     def _update_actor_posn(self, actor, new_posn, old_posn=None):
         """Update the actor's position on the Grid.

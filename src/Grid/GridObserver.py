@@ -41,4 +41,6 @@ class GridObserver:
         posns = [self.grid.actor_to_posn[i] for i in ids]
         dists = [(np.linalg.norm(np.subtract(posn, p)), p) for p in posns]
         dists.sort()
+        if len(dists) == 0:
+            return None
         return dists[0][1]

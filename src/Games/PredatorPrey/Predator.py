@@ -18,19 +18,20 @@ class Predator(Actor):
 
         super().__init__(actor_id, start_posn, PREDATOR, True)
 
-        # q_mat has (2n-1)^2 rows and 5 columns, since there are (2n-1)^2 different states
+        # q_mat has (2n-1)^2 + 1 rows and 5 columns, since there are (2n-1)^2
+        # different states (+1 is for the situation where there is no sheep)
         # and 5 different actions for the actor to take
-        self.q_mat = np.matrix(((2*(dim-1))**2)*[5*[0]])
+        self.q_mat = np.matrix(((2*(dim-1))**2 + 1)*[5*[0]])
         print(len(self.q_mat))
         # initialize epsilon
         if epsilon is None:
-            self.epsilon = 1
+            self.epsilon = 1.0
         else:
             self.epsilon = epsilon
 
         self.actions = [NORTH,SOUTH,EAST,WEST,NA]
         self.dim = dim
-        self.prev_state = -1
+        self.prev_state = int(-1)
         self.alpha = 0.1
         self.gamma = 0.8
 
@@ -40,9 +41,13 @@ class Predator(Actor):
         :return: the index in the Q matrix that corresponds to the state of the predator. Note that the index for the
          q-matrix is the distance vector from base (2*dim - 1) to base 10
         """
-        distance = np.linalg.norm(np.subtract(self.posn, observer.get_closest(PREY, self.posn)), ord=1)
-        distance = np.add(distance, (self.dim - 1, self.dim - 1))
-        return np.floor(distance[1] / float(2 * self.dim - 1)) + distance[0] % float(2 * self.dim - 1)
+        closest_sheep = observer.get_closest(PREY, self.posn)
+        if closest_sheep is None:
+            return int(-1) # so the state goes to the last row of Q
+        else:
+            distance = np.linalg.norm(np.subtract(self.posn, closest_sheep), ord=1)
+            distance = np.add(distance, (self.dim - 1, self.dim - 1))
+            return int(np.floor(distance[1] / float(2 * self.dim - 1)) + distance[0] % float(2 * self.dim - 1))
 
     def act(self, observer):
         state = self.get_state(observer)
@@ -54,13 +59,9 @@ class Predator(Actor):
             else:
                 probs = [float(i)/sum(q) for i in q]
             action_ind = np.random.choice(range(len(q.tolist()[0])), p = probs)
-            #print(q)
-            #print(action_ind)
         else:
             action_ind = q.argmax()
-            #print(q)
-            #print(action_ind)
-        self.prev_state = state
+        self.prev_state = int(state)
         return self.actions[action_ind]
 
     def give_feedback(self, observer):
@@ -69,8 +70,6 @@ class Predator(Actor):
         :return: nada - just updates the Q matrix
         """
         state = self.get_state(observer)
-
-        print("hi")
 
         if state == ((2*self.dim-1)^2-1)/2:
             r = 1000.0
@@ -81,7 +80,7 @@ class Predator(Actor):
                                       self.alpha*(r + self.gamma*max(self.q_mat[state]))
         # self.q_mat[self.prev_state] = np.add(self.q_mat[self.prev_state],
         #                             np.mat([[1]*5]))
-        print(self.q_mat[self.prev_state])
+        #print(self.q_mat[self.prev_state])
 
     def write_q(self,outfile):
         np.save(outfile, self.q_mat)

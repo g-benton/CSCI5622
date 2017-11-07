@@ -51,7 +51,7 @@ class GridWorld:
         # The simulation has ended, now simulate!
         if visualize:
             viz = GridVisualizer(self.grid.grid_dim[0], len(history) - 1,
-                                 1000, history)
+                                 50, history)
             viz.display()
 
     def _step(self):
