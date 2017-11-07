@@ -7,6 +7,7 @@ import copy
 from Grid2D import Grid2D
 from GridObserver import GridObserver
 from GridVisualizer import GridVisualizer
+from GridConstants import *
 
 class GridWorld:
 
@@ -71,6 +72,11 @@ class GridWorld:
                 new_posn = self.grid.move_actor(actor, action)
                 actor.update_posn(new_posn)
                 # Give actor feedback here.
+        # print(self.actors[PREDATOR])
+        # for actor in self.actors[PREDATOR]:
+        #     # if actor.get_can_overlap():
+        #     print(actor)
+        #     actor.give_feedback(self.observer)
 
     def _history_snapshot(self):
         """Take a snapshot of the current state of the actors with their posns.
