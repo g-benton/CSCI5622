@@ -18,7 +18,7 @@ class Predator(Actor):
         # different states (+1 is for the situation where there is no sheep)
         # and 5 different actions for the actor to take
         self.q_mat = np.matrix(((2*(dim-1))**2 + 1)*[5*[0]])
-        print(len(self.q_mat))
+        # print(len(self.q_mat))
         # initialize epsilon
         if epsilon is None:
             self.epsilon = 1.0
@@ -69,6 +69,7 @@ class Predator(Actor):
 
         if state == ((2*self.dim-1)^2-1)/2:
             r = 1000.0
+            self.epsilon *= 0.5
         else:
             r = 0.0
 
