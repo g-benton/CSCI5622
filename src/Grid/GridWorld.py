@@ -44,7 +44,7 @@ class GridWorld:
         # for now.
         if visualize:
             history = []
-        while condition.is_running(None):
+        while condition.is_running(self.observer):
             self._step()
             if visualize:
                 history.append(self._history_snapshot())

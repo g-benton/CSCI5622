@@ -1,3 +1,5 @@
+from GridConstants import *
+
 """Different classes for conditions of how long to run the games."""
 
 class TimeLimitConditions:
@@ -17,3 +19,22 @@ class TimeLimitConditions:
         """
         self.step_limit -= 1
         return self.step_limit >= 0
+
+
+class NoPreyConditions:
+
+    def is_running(self, grid_info):
+        """
+        Tells whether the game is still running.
+        based on whether there are any prey left in the simulation
+        """
+        ### grid info will be of the class Grid Observer ###
+
+        # get out the list of prey actors in the sim
+        prey_actors = grid_info.get_actor_type(PREY)
+
+        # if there aren't any left then kill the sim #
+        if len(prey_actors) == 0:
+            return False
+        else:
+            return True
