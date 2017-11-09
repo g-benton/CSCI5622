@@ -18,7 +18,6 @@ class Predator(Actor):
         # different states (+1 is for the situation where there is no sheep)
         # and 5 different actions for the actor to take
         self.q_mat = np.matrix(((2*(dim-1))**2 + 1)*[5*[0]])
-        # print(len(self.q_mat))
         # initialize epsilon
         if epsilon is None:
             self.epsilon = 1.0
@@ -47,16 +46,18 @@ class Predator(Actor):
 
     def act(self, observer):
         state = self.get_state(observer)
-        q = self.q_mat[int(state),:]
+        q = self.q_mat[int(state),:].tolist()[0]
         if random.random() < self.epsilon:
-            probs = q.tolist()[0]
-            if sum(probs) == 0:
-                probs = [1.0/len(probs)]*len(probs)
+            if sum(q) == 0:
+                probs = [1.0/len(q) for i in q]
             else:
-                probs = [float(i)/sum(q) for i in q]
-            action_ind = np.random.choice(range(len(q.tolist()[0])), p = probs)
+                sum_q = sum(q)
+                probs = [float(i)/sum_q for i in q]
+            action_ind = np.random.choice(range(len(q)), p = np.array(probs))
         else:
-            action_ind = q.argmax()
+            max_q = max(q)
+            maxes = [i for i, x in enumerate(q) if x == max_q]
+            action_ind = np.random.choice(maxes)
         self.prev_state = int(state)
         return self.actions[action_ind]
 
@@ -69,15 +70,12 @@ class Predator(Actor):
 
         if state == ((2*self.dim-1)^2-1)/2:
             r = 1000.0
-            self.epsilon *= 0.5
+            self.epsilon *= 0.99
         else:
             r = 0.0
 
         self.q_mat[self.prev_state] = (1-self.alpha)*self.q_mat[self.prev_state] + \
                                       self.alpha*(r + self.gamma*max(self.q_mat[state]))
-        # self.q_mat[self.prev_state] = np.add(self.q_mat[self.prev_state],
-        #                             np.mat([[1]*5]))
-        #print(self.q_mat[self.prev_state])
 
     def write_q(self,outfile):
         np.save(outfile, self.q_mat)
@@ -86,7 +84,4 @@ class Predator(Actor):
         self.q_mat = np.load(outfile)
 
 if __name__ == '__main__':
-    test = np.matrix(5*[[0]*3])
-    q = [1,2,2]
-    print(q.index(max(q)))
-    print(np.random.choice(range(len(q)), p = np.divide(q,sum(q))))
+    pass
