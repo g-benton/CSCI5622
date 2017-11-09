@@ -6,7 +6,6 @@ sys.path.append('../../Grid')
 from GridConstants import *
 from Actor import Actor
 
-
 class Predator(Actor):
     """Simple Predator class."""
 
