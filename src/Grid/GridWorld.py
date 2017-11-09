@@ -49,6 +49,7 @@ class GridWorld:
             if visualize:
                 history.append(self._history_snapshot())
         # The simulation has ended, now simulate!
+        # print(self.actors)
         if visualize:
             viz = GridVisualizer(self.grid.grid_dim[0], len(history) - 1,
                                  50, history)
@@ -63,16 +64,21 @@ class GridWorld:
                 new_posn = self.grid.move_actor(actor, action)
                 actor.update_posn(new_posn)
         # Have all actors get feeback on their actions.
+        # print("good1")
         for actor_type in self.actors.keys():
             for actor in self.actors[actor_type].values():
                 actor.give_feedback(self.observer)
         # Remove the actors that have been overlapped.
+        # print("good2")
         removed = self.grid.remove_overlapped()
         for rem in removed:
             for actor_dic in self.actors.values():
                 if rem in actor_dic:
                     del actor_dic[rem]
 
+
+
+        # print("good3")
 
     def _history_snapshot(self):
         """Take a snapshot of the current state of the actors with their posns.

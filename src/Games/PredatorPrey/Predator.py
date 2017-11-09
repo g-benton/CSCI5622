@@ -7,8 +7,8 @@ from GridConstants import *
 from Actor import Actor
 
 ## for Greg's Laptop ##
-import os
-os.chdir("/Users/greg/Dropbox/CSCI5622/CSCI5622/src/Games/PredatorPrey")
+# import os
+# os.chdir("/Users/greg/Dropbox/CSCI5622/CSCI5622/src/Games/PredatorPrey")
 
 
 class Predator(Actor):
@@ -52,13 +52,30 @@ class Predator(Actor):
     def act(self, observer):
         state = self.get_state(observer)
         q = self.q_mat[int(state),:]
+        # print("hi ian.")
         if random.random() < self.epsilon:
             probs = q.tolist()[0]
+            # print(q)
+            # print(type(probs))
             if sum(probs) == 0:
-                probs = [1.0/len(probs)]*len(probs)
+                probs = np.array([1/len(probs) for i in probs])
+                # print("hit")
+                # for i in probs:
+                #     print("here!")
             else:
-                probs = [float(i)/sum(q) for i in q]
-            action_ind = np.random.choice(range(len(q.tolist()[0])), p = probs)
+                # print("NO hit")
+                # print(probs)
+                # extract values from q and get their sum
+                # q_vals = [None] * len(probs)
+                # for option in range(len(probs)):
+                #     q_vals[option] =
+
+                probs = [i/sum(probs) for i in probs]
+                probs = np.array(probs)
+            # print(probs)
+            # print(np.array(probs))
+            # print(q)
+            action_ind = np.random.choice(range(len(q.tolist()[0])), p = np.array(probs) )
         else:
             action_ind = q.argmax()
         self.prev_state = int(state)
