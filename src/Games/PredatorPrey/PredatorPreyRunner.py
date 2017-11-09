@@ -65,7 +65,8 @@ def train_pred(game_count):
     world.add_actor(sheep, (4, 5))
     world.add_actor(wolf, (5, 5))
 
-    condition = TimeLimitConditions(10000)
+    # condition = TimeLimitConditions(10000)
+    condition = NoPreyConditions()
     world.run_simulation(condition, True)
 
 
@@ -74,4 +75,4 @@ if __name__ == '__main__':
     # run_sim()
     # is this going to work? #
 
-    train_pred(10)
+    train_pred(100)

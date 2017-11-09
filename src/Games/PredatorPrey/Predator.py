@@ -26,6 +26,7 @@ class Predator(Actor):
         self.actions = [NORTH,SOUTH,EAST,WEST,NA]
         self.dim = dim
         self.prev_state = int(-1)
+        self.prev_action = int(-1)
         self.alpha = 0.1
         self.gamma = 0.8
 
@@ -57,8 +58,11 @@ class Predator(Actor):
             max_q = max(q)
             maxes = [i for i, x in enumerate(q) if x == max_q]
             action_ind = np.random.choice(maxes)
+
+        action = self.actions[action_ind]
         self.prev_state = int(state)
-        return self.actions[action_ind]
+        self.prev_action = int(action_ind)
+        return action
 
     def give_feedback(self, observer):
         """
@@ -73,8 +77,12 @@ class Predator(Actor):
         else:
             r = 0.0
 
-        self.q_mat[self.prev_state] = (1-self.alpha)*self.q_mat[self.prev_state] + \
-                                      self.alpha*(r + self.gamma*max(self.q_mat[state]))
+        self.q_mat[self.prev_state,self.prev_action] = (1-self.alpha)*self.q_mat[self.prev_state,self.prev_action] + \
+                                      self.alpha*(r + self.gamma*self.q_mat[state].max())
+        if np.any(self.q_mat[self.prev_state]):
+            print(self.q_mat[self.prev_state])
+            print(self.prev_state)
+            print(state)
 
     def write_q(self,outfile):
         np.save(outfile, self.q_mat)
@@ -83,4 +91,7 @@ class Predator(Actor):
         self.q_mat = np.load(outfile)
 
 if __name__ == '__main__':
-    pass
+    test = np.mat([[1,2,3],[2,3,4]])
+    print(test[1].max())
+    test[1] = (1-0.1)*test[0] + 0.1*(0.8*(test[1].max()))
+    print(test)
