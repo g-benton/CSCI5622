@@ -1,7 +1,7 @@
 """Runs the Predator Prey game."""
 
 import sys
-
+from pathlib import Path
 from Prey import Prey
 from Predator import Predator
 sys.path.append('../../Grid')
@@ -37,33 +37,46 @@ def run_sim():
 
 def train_pred(game_count):
     """ Runs game_count number of games to train a single predator """
-    grid_dim = 10
+    grid_dim = 20
 
-    wolf = Predator(2, (5, 5), dim = grid_dim)
+
+    wolf = Predator(2, (0, 0), dim = grid_dim)
+    #q_file = Path("/home/greg/Dropbox/CSCI5622/CSCI5622/src/Games/PredatorPrey/wolf_q_mat.npy")
+    #if q_file.is_file():
+        # wolf.read_q(q_file)
+        #print("file read in")
 
 
     for game in range(game_count):
         # build world
         world = GridWorld((grid_dim, grid_dim))
-        sheep = Prey(1, (4, 5))
+        sheep = Prey(1, (19, 19))
 
         # add actors
-        world.add_actor(sheep, (4, 5))
-        world.add_actor(wolf, (5, 5))
+        wolf.update_posn((0, 0))
+        world.add_actor(wolf, (0, 0))
+        #for row_ind in range(wolf.q_mat.shape[0]):
+            #print(wolf.q_mat[row_ind])
+        world.add_actor(sheep, (19, 19))
 
-        condition = TimeLimitConditions(10000)
+        condition = NoPreyConditions()
         world.run_simulation(condition, False)
 
 
         print("Game", game,  "Done")
         # print(wolf.q_mat)
 
+    wolf.write_q("wolf_q_mat")
+
     world = GridWorld((grid_dim, grid_dim))
-    sheep = Prey(1, (4, 5))
+    sheep = Prey(1, (19, 19))
 
     # add actors
-    world.add_actor(sheep, (4, 5))
-    world.add_actor(wolf, (5, 5))
+    wolf.update_posn((0, 0))
+    world.add_actor(wolf, (0, 0))
+    #for row_ind in range(wolf.q_mat.shape[0]):
+        #print(wolf.q_mat[row_ind])
+    world.add_actor(sheep, (19, 19))
 
     # condition = TimeLimitConditions(10000)
     condition = NoPreyConditions()
@@ -75,4 +88,4 @@ if __name__ == '__main__':
     # run_sim()
     # is this going to work? #
 
-    train_pred(100)
+    train_pred(7000)

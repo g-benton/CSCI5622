@@ -16,10 +16,10 @@ class Predator(Actor):
         # q_mat has (2n-1)^2 + 1 rows and 5 columns, since there are (2n-1)^2
         # different states (+1 is for the situation where there is no sheep)
         # and 5 different actions for the actor to take
-        self.q_mat = np.matrix(((2*(dim-1))**2 + 1)*[5*[0]])
+        self.q_mat = np.matrix(((2*dim-1)**2 + 1)*[5*[0]])
         # initialize epsilon
         if epsilon is None:
-            self.epsilon = 1.0
+            self.epsilon = 0.01
         else:
             self.epsilon = epsilon
 
@@ -27,8 +27,8 @@ class Predator(Actor):
         self.dim = dim
         self.prev_state = int(-1)
         self.prev_action = int(-1)
-        self.alpha = 0.1
-        self.gamma = 0.8
+        self.alpha = 0.2
+        self.gamma = 0.99
 
     def get_state(self,observer):
         """
@@ -40,22 +40,20 @@ class Predator(Actor):
         if closest_sheep is None:
             return int(-1) # so the state goes to the last row of Q
         else:
-            distance = np.linalg.norm(np.subtract(self.posn, closest_sheep), ord=1)
-            distance = np.add(distance, (self.dim - 1, self.dim - 1))
-            return int(np.floor(distance[1] / float(2 * self.dim - 1)) + distance[0] % float(2 * self.dim - 1))
+            distance = np.subtract(self.posn, closest_sheep)
+            state_ind = self._dist_to_state_index(distance)
+            return state_ind
 
     def act(self, observer):
         state = self.get_state(observer)
         q = self.q_mat[int(state),:].tolist()[0]
+        max_q = max(q)
         if random.random() < self.epsilon:
-            if sum(q) == 0:
-                probs = [1.0/len(q) for i in q]
-            else:
-                sum_q = sum(q)
-                probs = [float(i)/sum_q for i in q]
+            probs = [i + (max_q + 0.01)*np.random.rand() for i in q]
+            sum_p = sum(probs)
+            probs = [float(i)/sum_p for i in probs]
             action_ind = np.random.choice(range(len(q)), p = np.array(probs))
         else:
-            max_q = max(q)
             maxes = [i for i, x in enumerate(q) if x == max_q]
             action_ind = np.random.choice(maxes)
 
@@ -71,24 +69,30 @@ class Predator(Actor):
         """
         state = self.get_state(observer)
 
-        if state == ((2*self.dim-1)^2-1)/2:
+        if state == self._dist_to_state_index([0,0]):
             r = 1000.0
             self.epsilon *= 0.99
         else:
             r = 0.0
 
-        self.q_mat[self.prev_state,self.prev_action] = (1-self.alpha)*self.q_mat[self.prev_state,self.prev_action] + \
-                                      self.alpha*(r + self.gamma*self.q_mat[state].max())
-        if np.any(self.q_mat[self.prev_state]):
-            print(self.q_mat[self.prev_state])
-            print(self.prev_state)
-            print(state)
+
+        self.q_mat[self.prev_state,self.prev_action] = \
+            (1-self.alpha)*self.q_mat[self.prev_state,self.prev_action] + \
+            self.alpha*(r + self.gamma*self.q_mat[state].max())
+        # if np.any(self.q_mat[self.prev_state]):
+            # print(self.q_mat[self.prev_state])
+            # print(self.prev_state)
+            # print(state)
 
     def write_q(self,outfile):
         np.save(outfile, self.q_mat)
 
     def read_q(self,outfile):
         self.q_mat = np.load(outfile)
+
+    def _dist_to_state_index(self,distance):
+        distance = np.add(distance, (self.dim - 1, self.dim - 1))
+        return (2*self.dim-1)*distance[0] + distance[1]
 
 if __name__ == '__main__':
     test = np.mat([[1,2,3],[2,3,4]])

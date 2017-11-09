@@ -13,3 +13,6 @@ PREY = 'Prey'
 
 # Grid Variables
 MAX_ACTOR_TYPES = 5 # upper bd for values of the game board
+
+# Visualization Variables
+VIZ_SPEED = 250 # higher = slower

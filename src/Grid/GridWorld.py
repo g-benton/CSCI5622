@@ -73,7 +73,7 @@ class GridWorld:
         # print(self.actors)
         if visualize:
             viz = GridVisualizer(self.grid.grid_dim[0], len(history) - 1,
-                                 50, history)
+                                 VIZ_SPEED, history)
             viz.display()
 
     def _step(self):
