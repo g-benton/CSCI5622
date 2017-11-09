@@ -22,17 +22,38 @@ class GridWorld:
         # Map actor name -> {actor id -> actor object}.
         self.actors = {}
         self.observer = GridObserver(self.grid, self.actors)
+        # List of actions to take given certain conditions are met at time step.
+        self.rules = []
+        # Set of actor ids that we have seen.
+        self.seen_ids = set()
+        # Largest actor id that we have seen.
+        self.largest_id = -1
 
     def add_actor(self, actor, start_position):
         """Add actor to our GridWorld.
         Args:
             actor: Actor object we wish to add to game world.
             start_position: The starting position on the grid as Tuple (x, y).
+        Returns: True or False if we were able to successfuly add the actor.
         """
+        if actor.actor_id in self.seen_ids:
+            raise ValueError('Non-unique actor id')
         if actor.name not in self.actors:
             self.actors[actor.get_name()] = {}
+        if not self.grid.add_actor(actor, start_position):
+            return False
         self.actors[actor.name][actor.get_actor_id()] = actor
-        self.grid.add_actor(actor, start_position)
+        self.seen_ids.add(actor.actor_id)
+        if actor.actor_id > self.largest_id:
+            self.largest_id = actor.actor_id
+        return True
+
+    def add_rule(self, rule):
+        """Add a rule to world.
+        Args:
+            rule: A Rule object.
+        """
+        self.rules.append(rule)
 
     def run_simulation(self, condition, visualize=False):
         """Runs the simulations while the condtion is true.
@@ -75,7 +96,9 @@ class GridWorld:
             for actor_dic in self.actors.values():
                 if rem in actor_dic:
                     del actor_dic[rem]
-
+        # Execute the rules.
+        for rule in self.rules:
+            rule.update_if_valid(self)
 
 
         # print("good3")

@@ -7,6 +7,7 @@ from Predator import Predator
 sys.path.append('../../Grid')
 from GridConstants import *
 from GridWorld import GridWorld
+from RunConditions import TimeLimitConditions
 from RunConditions import *
 
 def set_up():
@@ -20,6 +21,12 @@ def set_up():
     # wolf.read_q("Q_matrix.")
     world.add_actor(sheep, (4, 5))
     world.add_actor(wolf, (5, 5))
+
+    # def sheep_producer(actor_id, posn):
+    #     return Prey(actor_id, posn)
+
+    # world.add_rule(SpawnNewActorRule(PREY, sheep_producer, time_interval=4))
+
     return world
 
 def run_sim():

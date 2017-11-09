@@ -6,10 +6,13 @@ sys.path.append('../../Grid')
 from GridConstants import *
 from Actor import Actor
 
+<<<<<<< HEAD
 ## for Greg's Laptop ##
 # import os
 # os.chdir("/Users/greg/Dropbox/CSCI5622/CSCI5622/src/Games/PredatorPrey")
 
+=======
+>>>>>>> 9f3b44a24831a0b5df584bd65f60c4bc0281b4df
 
 class Predator(Actor):
     """Simple Predator class."""
