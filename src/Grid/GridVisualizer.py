@@ -38,6 +38,8 @@ class GridVisualizer:
         # if we've hit the frame limit stop updating
         if self.frame < self.frames:
             self.frame += 1
+        else:
+            self.frame = 0
 
     def _convert_to_np_array(self):
         """ takes in dictionary of dictionaries of actor locations """

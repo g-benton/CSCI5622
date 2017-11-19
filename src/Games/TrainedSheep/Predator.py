@@ -46,11 +46,7 @@ class Predator(Actor):
 
     def act(self, observer):
         state = self.get_state(observer)
-
-        # XXX choose one of the following two XXX #
-        q = self.q_mat[int(state),:].tolist()[0] # if you want to run fresh
-        # q = self.q_mat[int(state),:].tolist() # if you want to read in a saved q matrix
-
+        q = self.q_mat[int(state),:].tolist()
         max_q = max(q)
         if random.random() < self.epsilon:
             probs = [i + (max_q + 0.01)*np.random.rand() for i in q]
