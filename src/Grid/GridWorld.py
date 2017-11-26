@@ -28,6 +28,8 @@ class GridWorld:
         self.seen_ids = set()
         # Largest actor id that we have seen.
         self.largest_id = -1
+        # include number of moves in game
+        self.moves_in_game = 0
 
     def add_actor(self, actor, start_position):
         """Add actor to our GridWorld.
@@ -78,6 +80,8 @@ class GridWorld:
 
     def _step(self):
         """Do one time step in our simulation."""
+        # update number of moves
+        self.moves_in_game += 1
         # Have all the actors act.
         for actor_type in self.actors.keys():
             for actor in self.actors[actor_type].values():
@@ -113,3 +117,6 @@ class GridWorld:
             for actor_id, actor in inner.items():
                 snapshot[name][actor_id] = actor.posn
         return snapshot
+
+    def _number_of_moves(self):
+        return self.moves_in_game
