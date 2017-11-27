@@ -107,7 +107,7 @@ class Prey(Actor):
         if state == self._dist_to_state_index([0,0]):
             # if the prey and predator are overlapping then HUGE negative reward
             r = -100
-            self.epsilon *=0.99
+            self.epsilon *= 0.99
         else:
             # otherwise give the prey something for continiuing to be alive.
             r = 0.1
