@@ -44,3 +44,19 @@ class GridObserver:
         if len(dists) == 0:
             return None
         return dists[0][1]
+
+    def get_k_closest(self, name, posn, k):
+        """Get the closest actor of specified type to the position.
+        Args:
+            name: The name of the type of object to get.
+            posn: The (x, y) tuple position of where to look.
+        Returns: The list (x, y) tuple position of the closest actor.
+        """
+        ids = self.actors[name].keys()
+        posns = [self.grid.actor_to_posn[i] for i in ids]
+        dists = [(np.linalg.norm(np.subtract(posn, p)), p) for p in posns]
+        dists.sort()
+        if len(dists) == 0:
+            return None
+        top_k = dists[:k]
+        return [top_actor[1] for top_actor in top_k]
