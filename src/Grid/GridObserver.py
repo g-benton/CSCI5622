@@ -60,3 +60,9 @@ class GridObserver:
             return None
         top_k = dists[:k]
         return [top_actor[1] for top_actor in top_k]
+
+if __name__ == '__main__':
+
+    dists = [0,1,2]
+    top_k = dists[:1]
+    print(top_k)

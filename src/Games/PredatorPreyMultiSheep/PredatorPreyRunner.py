@@ -18,7 +18,10 @@ def set_up():
     grid_dim = 10
     world = GridWorld((grid_dim, grid_dim))
     sheep = Prey(1, (4, 5))
-    wolf = Predator(2, (5, 5), dim = grid_dim)
+    wolf = Predator(2, (5, 5),
+                    [[1, 2, 5, 10], [5, 10]], [[45, 135, 225, 315], [0]],
+                    [[1, 2, 5, 10], [5, 10]], [[45, 135, 225, 315], [0]],
+                    [[1, 2, 5, 10], [5, 10]])
     # wolf.read_q("Q_matrix.")
     world.add_actor(sheep, (4, 5))
     world.add_actor(wolf, (5, 5))
@@ -40,7 +43,10 @@ def train_pred(game_count):
     """ Runs game_count number of games to train a single predator """
     grid_dim = 20
 
-    wolf = Predator(2, (0, 0), dim = grid_dim)
+    wolf = Predator(2, (0, 0),
+                    [[1, 2, 5, 10], [5, 10]], [[45, 135, 225, 315], [0]],
+                    [[1, 2, 5, 10], [5, 10]], [[45, 135, 225, 315], [0]],
+                    [[1, 2, 5, 10], [5, 10]])
 
     # XXX there is an error in using this, see line 49 in predator.py XXX #
     # wolf.read_q("./wolf_q_mat_50k_training.npy")
@@ -88,7 +94,10 @@ def average_moves_over_time(simulations_per_training, max_training):
         """ Runs game_count number of games to train a single predator """
         grid_dim = 20
 
-        wolf = Predator(2, (0, 0), dim=grid_dim)
+        wolf = Predator(2, (0, 0),
+                    [[1, 2, 5, 10], [5, 10]], [[45, 135, 225, 315], [0]],
+                    [[1, 2, 5, 10], [5, 10]], [[45, 135, 225, 315], [0]],
+                    [[1, 2, 5, 10], [5, 10]])
 
         for game in range(max_training):
             # build world
