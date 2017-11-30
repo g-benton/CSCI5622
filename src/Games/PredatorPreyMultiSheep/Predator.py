@@ -9,7 +9,10 @@ from Actor import Actor
 class Predator(Actor):
     """Simple Predator class. """
 
-    def __init__(self, actor_id, start_posn, theta_divides, r_divides, wall_divides):
+    def __init__(self, actor_id, start_posn,
+                 wolf_theta_divides, wolf_r_divides,
+                 sheep_theta_divides, sheep_r_divides,
+                 wall_r_divides):
 
         # theta_divides is a list of lists. The predator can determine that the K^th closest sheep is
         # in between any of the angles in list K, but it has no more precision than that.
@@ -17,34 +20,43 @@ class Predator(Actor):
         # r_divides is the same as theta_divides, but for distances (I used the 2-norm). In addition, the predator
         # cannot see beyond the distance that is the last element of r_divides.
 
-        # wall_divides is the same as r_divides, but with the closest wall. Therefore, the information that the predator
-        # gets is (direction, distance_index) for the n closest walls, where n is the length of wall_divides
+        # wall_r_divides is the same as r_divides, but with the closest wall. Therefore, the information that the
+        # predator gets is (direction, distance_index) for the n closest walls, where n is the length of wall_divides
 
         # in total, the predator will get a list of tuples, (direction, distance), for each sheep and the closest wall.
         # This will be the input into the state space, so the size of the Q-matrix is:
         #
-        #  ((# of directions)*(# of distances) + 1)^(# of sheep + 1).
+        #  ((# of directions)*(# of distances) + 1)^(# of actors + # of walls).
         #
         # The +1 in the exponent comes from finding the location of the wall. The other +1 comes from if the predator
-        # can't see the sheep/wall. This can get pretty big as we put in more sheep.
+        # can't see the sheep/wall. This can get pretty big as we put in more actors.
 
         super().__init__(actor_id, start_posn, PREDATOR, True)
 
-        self.theta_divides = theta_divides
-        self.r_divides = r_divides
-        self.wall_divides = wall_divides
-        self.basis_mat = _make_basis_matrix()
-        self.q_mat = np.array(states*[5*[0]])
+        self.actions = [NORTH, SOUTH, EAST, WEST, NA]
 
-        self.actions = [NORTH,SOUTH,EAST,WEST,NA]
+        self.wolf_theta_divides = wolf_theta_divides
+        self.wolf_r_divides = wolf_r_divides
+        self.num_wolves_seen = len(wolf_r_divides)
+
+        self.sheep_theta_divides = sheep_theta_divides
+        self.sheep_r_divides = sheep_r_divides
+        self.num_sheep_seen = len(sheep_r_divides)
+
+        self.wall_r_divides = wall_r_divides
+        self.num_walls_seen = len(wall_r_divides)
+
+        (self.states,self.basis_mat) = _make_basis_matrix()
+
+        self.q_mat = np.array(self.states*[len(self.actions)*[0]])
         self.prev_state = int(-1)
         self.prev_action = int(-1)
-        self.alpha = 0.1
-        self.gamma = 0.99
-        self.epsilon = 0.01
-        self.decay_per_epoch = 0.01
-        self.reward = 1000.0
-        self.moves = 0
+        self.alpha = 0.1 # learning rate
+        self.gamma = 0.99 # percent propogated back in Q-matrix equation
+        self.epsilon = 0.01 # percentage of time spent exploring
+        self.epsilon_decay_per_epoch = 0.01 # decay of epsilon each time the sheep is killed
+        self.reward = 1000.0 # reward function (arbitrary)
+        self.moves = 0 # moves taken by the predator
 
     def get_state(self,observer):
         """
@@ -52,6 +64,7 @@ class Predator(Actor):
         :return: the index in the Q matrix that corresponds to the state of the predator. Note that the index for the
          q-matrix is the distance vector from base (2*dim - 1) to base 10
         """
+        
         closest_sheep = observer.get_closest(PREY, self.posn)
         if closest_sheep is None:
             return int(-1) # so the state goes to the last row of Q
@@ -95,18 +108,13 @@ class Predator(Actor):
 
         if state == self._dist_to_state_index([0,0]):
             r = self.reward
-            self.epsilon *= (1-self.decay_per_epoch)
+            self.epsilon *= (1-self.epsilon_decay_per_epoch)
         else:
             r = 0.0
-
 
         self.q_mat[self.prev_state,self.prev_action] = \
             (1-self.alpha)*self.q_mat[self.prev_state,self.prev_action] + \
             self.alpha*(r + self.gamma*self.q_mat[state].max())
-        # if np.any(self.q_mat[self.prev_state]):
-            # print(self.q_mat[self.prev_state])
-            # print(self.prev_state)
-            # print(state)
 
     def write_q(self,outfile):
         np.save(outfile, self.q_mat)
@@ -114,8 +122,8 @@ class Predator(Actor):
     def read_q(self,outfile):
         self.q_mat = np.load(outfile)
 
-    def _dist_to_state_index(self,sheep_distances,wall_distance):
-        # distance is a list of tuples of (x_distance, y_distance)
+    def _dist_to_state_index(self,wolf_distances,sheep_distances,wall_distances):
+        # distances is a list of tuples of (x_distance, y_distance)
         # this function returns an an index to the Q-matrix from that
 
         # first get the direction and distance to the closest wall
@@ -143,10 +151,17 @@ class Predator(Actor):
         return (np.arctan2(distance[0],distance[1]),np.linalg.norm(distance))
 
     def _make_basis_matrix(self):
-        states_mat = np.array([len(theta) * len(r) + 1 for theta, r in zip(self.theta_divides,self.r_divides)])
-        states_mat = np.insert(states_mat,0,len(self.wall_divides) + 1)
+
+        # make an array with all of the possible states for each actor and wall
+        wolf_states_mat = [len(theta) * len(r) + 1 for theta, r in zip(self.wolf_theta_divides,self.wolf_r_divides)]
+        sheep_states_mat = [len(theta) * len(r) + 1 for theta, r in zip(self.sheep_theta_divides,self.sheep_r_divides)]
+        wall_states_mat = [len(r) + 1 for r in self.wall_r_divides]
+
+        states_mat = wolf_states_mat + sheep_states_mat + wall_states_mat
+
+        # make an array that acts as a basis to hash states to a state index
         basis = np.cumprod(states_mat)
-        return np.insert(np.delete(basis, -1),0,1)
+        return (basis[-1], np.insert(np.delete(basis, -1),0,1))
 
 if __name__ == '__main__':
     test0 = (1,2)
