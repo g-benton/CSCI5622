@@ -19,12 +19,8 @@ def _make_basis_matrix(wolf_r_divides,wolf_theta_divides,
 
     # make an array that acts as a basis to hash states to a state index
     basis = np.cumprod(states_mat)
-    num_states = int(basis[-1]) + 1  # plus one for a garbage state if needed (-1 maps to the last state)
-    print(basis)
-    print(states_mat)
+    num_states = int(basis[-1])
     basis = np.insert(np.delete(basis, -1), 0, 1)
-    print(basis)
-    print(num_states)
     return (num_states, basis)
 
 class Predator(Actor):
@@ -71,14 +67,14 @@ class Predator(Actor):
                                                           self.sheep_r_divides, self.sheep_theta_divides,
                                                           self.wall_r_divides)
 
-        self.q_mat = np.array(self.states*[len(self.actions)*[0]])
+        self.q_mat = np.array(self.states*[len(self.actions)*[0.0]])
         self.prev_state = int(-1)
         self.prev_action = int(-1)
-        self.alpha = 0.1 # learning rate
-        self.gamma = 0.99 # percent propogated back in Q-matrix equation
-        self.epsilon = 0.01 # percentage of time spent exploring
-        self.epsilon_decay_per_epoch = 0.01 # decay of epsilon each time the sheep is killed
-        self.reward = 1000.0 # reward function (arbitrary)
+        self.alpha = 0.01 # learning rate
+        self.gamma = 0.2 # percent propogated back in Q-matrix equation
+        self.epsilon = 0.1 # percentage of time spent exploring
+        self.epsilon_decay_per_epoch = 0.001 # decay of epsilon each time the sheep is killed
+        self.reward = 10000.0 # reward function (arbitrary)
         self.moves = 0 # moves taken by the predator
 
     def get_state(self,observer):
@@ -88,8 +84,9 @@ class Predator(Actor):
          q-matrix is the distance vector from base (2*dim - 1) to base 10
         """
 
-        closest_preds = observer.get_k_closest(PREDATOR, self.posn, self.num_wolves_seen)
+        closest_preds = observer.get_k_closest(PREDATOR, self.posn, self.num_wolves_seen + 1)
         closest_preds = [np.subtract(pred,self.posn) for pred in closest_preds]
+        closest_preds = closest_preds[0:]
 
         closest_prey = observer.get_k_closest(PREY, self.posn, self.num_sheep_seen)
         closest_prey = [np.subtract(prey,self.posn) for prey in closest_prey]
@@ -140,13 +137,13 @@ class Predator(Actor):
 
         if self.posn == observer.get_k_closest(PREY,self.posn,1)[0]:
             r = self.reward
-            self.epsilon *= (1-self.epsilon_decay_per_epoch)
+            self.epsilon *= (1.0-self.epsilon_decay_per_epoch)
         else:
             r = 0.0
 
         self.q_mat[self.prev_state,self.prev_action] = \
-            (1-self.alpha)*self.q_mat[self.prev_state,self.prev_action] + \
-            self.alpha*(r + self.gamma*self.q_mat[state].max())
+            float(1.0-self.alpha)*float(self.q_mat[self.prev_state,self.prev_action]) + \
+            float(self.alpha)*float(r + self.gamma*self.q_mat[state].max())
 
     def write_q(self,outfile):
         np.save(outfile, self.q_mat)
@@ -164,7 +161,7 @@ class Predator(Actor):
         wall_coefs = self._wall_distance_to_coefs(wall_headings)
 
         # extract the "a" matrix, which is the coefficients of a number in base (self.basis_mat)
-        a =  np.array(wolf_coefs + sheep_coefs + wall_coefs)
+        a = np.array(wolf_coefs + sheep_coefs + wall_coefs)
 
         return np.dot(a,self.basis_mat)
 
@@ -178,7 +175,7 @@ class Predator(Actor):
         r_divides_list = r_divides_list[:num_actors]
 
         for dist,r_divides,theta_divides in zip(distances,r_divides_list,theta_divides_list):
-            theta = np.arctan2(dist[0],dist[1]) * 180 / np.pi
+            theta = np.arctan2(-dist[1],dist[0]) * 180 / np.pi
             r = np.linalg.norm(dist)
             r_ind = next((ii for (ii,r_divide) in enumerate(r_divides) if r <= r_divide), -1)
             if r_ind == -1:

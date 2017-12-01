@@ -18,10 +18,11 @@ def set_up():
     grid_dim = 10
     world = GridWorld((grid_dim, grid_dim))
     sheep = Prey(1, (4, 5))
-    wolf = Predator(2, (5, 5),
-                    [[1, 2, 5, 10], [5, 10]], [[45, 135, 225, 315], [0]],
-                    [[1, 2, 5, 10], [5, 10]], [[45, 135, 225, 315], [0]],
-                    [[1, 2, 5, 10], [5, 10]])
+    wolf = Predator(2, (0, 0),
+                    [[]], [[]],
+                    [[100]], [[-135, -45, 45, 135]],
+                    [[10]])
+    print(wolf.states)
     # wolf.read_q("Q_matrix.")
     world.add_actor(sheep, (4, 5))
     world.add_actor(wolf, (5, 5))
@@ -44,9 +45,12 @@ def train_pred(game_count):
     grid_dim = 20
 
     wolf = Predator(2, (0, 0),
-                    [[1, 2, 5, 10], [5, 10]], [[45, 135, 225, 315], [0]],
-                    [[1, 2, 5, 10], [5, 10]], [[45, 135, 225, 315], [0]],
-                    [[1, 2, 5, 10], [5, 10]])
+                    [[]], [[]],
+                    [[100]], [[-135, -45, 45, 135]],
+                    [[10]])
+
+    print(wolf.states)
+
 
     # XXX there is an error in using this, see line 49 in predator.py XXX #
     # wolf.read_q("./wolf_q_mat_50k_training.npy")
@@ -65,7 +69,6 @@ def train_pred(game_count):
         world.run_simulation(condition, False)
 
         print("Game", game,  "Done")
-        # print(wolf.q_mat)
 
     wolf.write_q("wolf_q_mat")
 
@@ -95,9 +98,9 @@ def average_moves_over_time(simulations_per_training, max_training):
         grid_dim = 20
 
         wolf = Predator(2, (0, 0),
-                    [[1, 2, 5, 10], [5, 10]], [[45, 135, 225, 315], [0]],
-                    [[1, 2, 5, 10], [5, 10]], [[45, 135, 225, 315], [0]],
-                    [[1, 2, 5, 10], [5, 10]])
+                        [[]], [[]],
+                        [[100]], [[-135, -45, 45, 135]],
+                        [[10]])
 
         for game in range(max_training):
             # build world
@@ -137,8 +140,8 @@ def plot_info(title_, x_axis, y_xis, x_data, y_data, save, display):
 if __name__ == '__main__':
     # run_sim()
     # is this going to work? #
-    train_pred(10)
+    train_pred(1000)
     # yes it is
-    info = average_moves_over_time(10, 10)
+    info = average_moves_over_time(10, 100)
     plot_info("Average_Moves_Over_time", "Number of Iterations", "Average Number of Moves",
-              range(10), info, 0, 1)
+              range(100), info, 0, 1)
