@@ -20,7 +20,7 @@ def set_up():
     sheep = Prey(1, (4, 5))
     wolf = Predator(2, (0, 0),
                     [[]], [[]],
-                    [[100]], [[-135, -45, 45, 135]],
+                    [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100]], [[-135, -90, -45, 0, 45, 90, 135, 180]],
                     [[10]])
     print(wolf.states)
     # wolf.read_q("Q_matrix.")
@@ -46,7 +46,7 @@ def train_pred(game_count):
 
     wolf = Predator(2, (0, 0),
                     [[]], [[]],
-                    [[100]], [[-135, -45, 45, 135]],
+                    [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100]], [[-135, -90, -45, 0, 45, 90, 135, 180]],
                     [[10]])
 
     print(wolf.states)
@@ -68,7 +68,7 @@ def train_pred(game_count):
         condition = NoPreyConditions()
         world.run_simulation(condition, False)
 
-        print("Game", game,  "Done")
+        print("Game", game + 1,  "Done")
 
     wolf.write_q("wolf_q_mat")
 
@@ -78,8 +78,6 @@ def train_pred(game_count):
     # add actors
     wolf.update_posn((0, 0))
     world.add_actor(wolf, (0, 0))
-    #for row_ind in range(wolf.q_mat.shape[0]):
-        #print(wolf.q_mat[row_ind])
     world.add_actor(sheep, (19, 19))
 
     # condition = TimeLimitConditions(10000)
@@ -99,7 +97,7 @@ def average_moves_over_time(simulations_per_training, max_training):
 
         wolf = Predator(2, (0, 0),
                         [[]], [[]],
-                        [[100]], [[-135, -45, 45, 135]],
+                        [[1,2,3,4,5,6,7,8,9,10,100]], [[-135, -90, -45, 0, 45, 90, 135, 180]],
                         [[10]])
 
         for game in range(max_training):
@@ -118,7 +116,7 @@ def average_moves_over_time(simulations_per_training, max_training):
             # store simulated moves
             simulations[game] += world._number_of_moves()
 
-        print("Simulation Number ", sim, "Done")
+        print("Simulation Number ", sim + 1, "Done")
 
     # return average moves per training level
     return [float(sim)/simulations_per_training for sim in simulations]
@@ -142,6 +140,6 @@ if __name__ == '__main__':
     # is this going to work? #
     train_pred(1000)
     # yes it is
-    info = average_moves_over_time(10, 100)
+    info = average_moves_over_time(5, 100)
     plot_info("Average_Moves_Over_time", "Number of Iterations", "Average Number of Moves",
               range(100), info, 0, 1)
