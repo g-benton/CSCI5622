@@ -21,7 +21,7 @@ def set_up():
     wolf = Predator(2, (0, 0),
                     [[]], [[]],
                     [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100]], [[-135, -90, -45, 0, 45, 90, 135, 180]],
-                    [[1, 2, 3, 4, 5, 10, 100]])
+                    [[1, 2, 3, 4, 5, 10, 100],[1,2,3,4,5,10]])
     print(wolf.states)
     # wolf.read_q("Q_matrix.")
     world.add_actor(sheep, (4, 5))
@@ -47,7 +47,7 @@ def train_pred(game_count):
     wolf = Predator(2, (0, 0),
                     [[]], [[]],
                     [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100]], [[-135, -90, -45, 0, 45, 90, 135, 180]],
-                    [[1, 2, 3, 4, 5, 10, 100]])
+                    [[1, 2, 3, 4, 5, 10, 100],[1,2,3,4,5,10]])
 
     print(wolf.states)
 
@@ -98,7 +98,7 @@ def average_moves_over_time(simulations_per_training, max_training):
         wolf = Predator(2, (0, 0),
                         [[]], [[]],
                         [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100]], [[-135, -90, -45, 0, 45, 90, 135, 180]],
-                        [[1, 2, 3, 4, 5, 10, 100]])
+                        [[1, 2, 3, 4, 5, 10, 100], [1, 2, 3, 4, 5, 10]])
 
         for game in range(max_training):
             # build world
@@ -142,4 +142,4 @@ if __name__ == '__main__':
     # yes it is
     info = average_moves_over_time(5, 1000)
     plot_info("Average_Moves_Over_time", "Number of Iterations", "Average Number of Moves",
-              range(100), info, 0, 1)
+              range(1000), info, 0, 1)
