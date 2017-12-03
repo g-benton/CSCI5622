@@ -128,6 +128,6 @@ if __name__ == '__main__':
     # is this going to work? #
     train_pred(10)
     # yes it is
-    info = average_moves_over_time(3, 1000)
+    info = average_moves_over_time(3, 100)
     plot_info("Average_Moves_Over_time", "Number of Iterations", "Average Number of Moves",
-              range(1000), info, 0, 1)
+              range(100), info, 0, 1)
