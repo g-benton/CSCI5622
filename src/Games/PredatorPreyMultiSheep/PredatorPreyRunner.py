@@ -19,9 +19,10 @@ def set_up():
     world = GridWorld((grid_dim, grid_dim))
     sheep = Prey(1, (4, 5))
     wolf = Predator(2, (0, 0),
-                    [[]], [[]],
-                    [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100]], [[-135, -90, -45, 0, 45, 90, 135, 180]],
-                    [[1, 2, 3, 4, 5, 10, 100],[1,2,3,4,5,10]])
+                    [[]], [[]], # predator info
+                    [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100]], [[-135, -90, -45, 0, 45, 90, 135, 180]], # prey info
+                    [[]],[[]], # obstacle info
+                    [[1, 2, 3, 4, 5, 10, 100],[1,2,3,4,5,10]]) # wall info
     print(wolf.states)
     # wolf.read_q("Q_matrix.")
     world.add_actor(sheep, (4, 5))
@@ -50,9 +51,10 @@ def train_pred(game_count):
     # wall_r_divides):
 
     wolf = Predator(2, (0, 0),
-                    [[]], [[]],
-                    [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100]], [[-135, -90, -45, 0, 45, 90, 135, 180]],
-                    [[1, 2, 3, 4, 5, 10, 100],[1,2,3,4,5,10]])
+                    [[]], [[]], # predator info
+                    [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100]], [[-135, -90, -45, 0, 45, 90, 135, 180]], # prey info
+                    [[]],[[]], # obstacle info
+                    [[1, 2, 3, 4, 5, 10, 100],[1,2,3,4,5,10]]) # wall info
 
     print(wolf.states)
 
@@ -101,9 +103,10 @@ def average_moves_over_time(simulations_per_training, max_training):
         grid_dim = 20
 
         wolf = Predator(2, (0, 0),
-                        [[]], [[]],
-                        [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100]], [[-135, -90, -45, 0, 45, 90, 135, 180]],
-                        [[1, 2, 3, 4, 5, 10, 100], [1, 2, 3, 4, 5, 10]])
+                        [[]], [[]],  # predator info
+                        [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100]], [[-135, -90, -45, 0, 45, 90, 135, 180]],  # prey info
+                        [[]], [[]],  # obstacle info
+                        [[1, 2, 3, 4, 5, 10, 100], [1, 2, 3, 4, 5, 10]])  # wall info
 
         for game in range(max_training):
             # build world
@@ -145,6 +148,7 @@ if __name__ == '__main__':
     # is this going to work? #
     train_pred(1000)
     # yes it is
-    info = average_moves_over_time(5, 1000)
+    games_per_sim = 1000
+    info = average_moves_over_time(5, games_per_sim)
     plot_info("Average_Moves_Over_time", "Number of Iterations", "Average Number of Moves",
-              range(1000), info, 0, 1)
+              range(games_per_sim), info, 0, 1)

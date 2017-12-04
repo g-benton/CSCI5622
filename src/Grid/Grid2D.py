@@ -103,12 +103,10 @@ class Grid2D:
         actor_posn = self.actor_to_posn[actor_id]
         del self.actor_to_posn[actor_id]
         for actor in self.posn_to_actor[actor_posn]:
-            # print("HERE")
-            # print(actor)
             if actor.get_actor_id() == actor_id:
-                # print("HIT")
                 self.posn_to_actor[actor_posn].remove(actor)
-                # print("HIT")
+            if len(self.posn_to_actor[actor_posn]) == 0:
+                del self.posn_to_actor[actor_posn]
 
     def _update_actor_posn(self, actor, new_posn, old_posn=None):
         """Update the actor's position on the Grid.

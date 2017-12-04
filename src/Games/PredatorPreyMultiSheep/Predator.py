@@ -9,13 +9,16 @@ from Actor import Actor
 
 def _make_basis_matrix(wolf_r_divides,wolf_theta_divides,
                        sheep_r_divides, sheep_theta_divides,
+                       obs_r_divides,obs_theta_divides,
                        wall_r_divides):
+
     # make an array with all of the possible states for each actor and wall
     wolf_states_mat = [len(theta) * len(r) + 1 for theta, r in zip(wolf_theta_divides, wolf_r_divides)]
     sheep_states_mat = [len(theta) * len(r) + 1 for theta, r in zip(sheep_theta_divides, sheep_r_divides)]
+    obs_states_mat = [len(theta) * len(r) + 1 for theta, r in zip(obs_theta_divides, obs_r_divides)]
     wall_states_mat = [4*len(r) + 1 for r in wall_r_divides]
 
-    states_mat = wolf_states_mat + sheep_states_mat + wall_states_mat
+    states_mat = wolf_states_mat + sheep_states_mat + obs_states_mat + wall_states_mat
 
     # make an array that acts as a basis to hash states to a state index
     basis = np.cumprod(states_mat)
@@ -29,6 +32,7 @@ class Predator(Actor):
     def __init__(self, actor_id, start_posn,
                  wolf_r_divides, wolf_theta_divides,
                  sheep_r_divides, sheep_theta_divides,
+                 obs_r_divides,obs_theta_divides,
                  wall_r_divides):
 
         # theta_divides is a list of lists. The predator can determine that the K^th closest sheep is
@@ -60,11 +64,16 @@ class Predator(Actor):
         self.sheep_r_divides = sheep_r_divides
         self.num_sheep_seen = len(sheep_r_divides)
 
+        self.obs_theta_divides = obs_theta_divides
+        self.obs_r_divides = obs_r_divides
+        self.num_obs_seen = len(obs_r_divides)
+
         self.wall_r_divides = wall_r_divides
         self.num_walls_seen = len(wall_r_divides)
 
         (self.states,self.basis_mat) = _make_basis_matrix(self.wolf_r_divides,self.wolf_theta_divides,
                                                           self.sheep_r_divides, self.sheep_theta_divides,
+                                                          self.obs_r_divides, self.obs_theta_divides,
                                                           self.wall_r_divides)
 
         self.q_mat = np.array(self.states*[len(self.actions)*[0.0]])
@@ -86,19 +95,22 @@ class Predator(Actor):
 
         closest_preds = observer.get_k_closest(PREDATOR, self.posn, self.num_wolves_seen + 1)
         closest_preds = [np.subtract(pred,self.posn) for pred in closest_preds]
-        closest_preds = closest_preds[0:]
+        closest_preds = closest_preds[1:]
 
         closest_prey = observer.get_k_closest(PREY, self.posn, self.num_sheep_seen)
         closest_prey = [np.subtract(prey,self.posn) for prey in closest_prey]
 
+        closest_obs = observer.get_k_closest(PREY, self.posn, self.num_obs_seen)
+        closest_obs = [np.subtract(obs, self.posn) for obs in closest_obs]
+
         dim = observer.grid.grid_dim
         walls = [0,1,2,3] # North, South, East, and West, respectively.
-        dist_to_walls = [self.posn[1] , dim[1] - self.posn[1] - 1, dim[0] - self.posn[0] - 1, self.posn[0]]
+        dist_to_walls = [self.posn[1], dim[1] - self.posn[1] - 1, dim[0] - self.posn[0] - 1, self.posn[0]]
         # get the indices of the k closest walls
         closest_walls_inds = np.argpartition(dist_to_walls, self.num_walls_seen)[self.num_walls_seen:]
         closest_walls = [(dist_to_walls[ind],walls[ind]) for ind in closest_walls_inds]
 
-        state_ind = self._dists_to_state_index(closest_preds,closest_prey,closest_walls)
+        state_ind = self._dists_to_state_index(closest_preds,closest_prey,closest_obs,closest_walls)
 
         return state_ind
 
@@ -106,7 +118,7 @@ class Predator(Actor):
         # get current state of the observer
         state = self.get_state(observer)
 
-        # update the number of moves that the predetor has used
+        # update the number of moves that the predator has used
         self.moves += 1
 
         # XXX choose one of the following two XXX #
@@ -151,17 +163,18 @@ class Predator(Actor):
     def read_q(self,outfile):
         self.q_mat = np.load(outfile)
 
-    def _dists_to_state_index(self,wolf_distances,sheep_distances,wall_headings):
+    def _dists_to_state_index(self,wolf_distances,sheep_distances,obs_distances,wall_headings):
         # distances is a list of tuples of (x_distance, y_distance)
         # wall_headings is a list of tuples of (wall, distance)
         # this function returns an an index to the Q-matrix from that
 
         wolf_coefs = self._distance_to_coefs(self.wolf_r_divides, self.wolf_theta_divides, wolf_distances)
         sheep_coefs = self._distance_to_coefs(self.sheep_r_divides, self.sheep_theta_divides, sheep_distances)
+        obs_coefs = self._distance_to_coefs(self.obs_r_divides, self.obs_theta_divides, obs_distances)
         wall_coefs = self._wall_distance_to_coefs(wall_headings)
 
         # extract the "a" matrix, which is the coefficients of a number in base (self.basis_mat)
-        a = np.array(wolf_coefs + sheep_coefs + wall_coefs)
+        a = np.array(wolf_coefs + sheep_coefs + obs_coefs + wall_coefs)
 
         return np.dot(a,self.basis_mat)
 
@@ -207,5 +220,6 @@ if __name__ == '__main__':
 
     sheep_r = 100
     r_divides = [1,2,5,10,20]
+    print(r_divides[1:])
     test = next((ii for (ii, r_divide) in enumerate(r_divides) if sheep_r <= r_divide), -1)
     print(test)
