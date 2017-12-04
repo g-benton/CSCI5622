@@ -147,7 +147,8 @@ class Predator(Actor):
         """
         state = self.get_state(observer)
 
-        if self.posn == observer.get_k_closest(PREY,self.posn,1)[0]:
+        k_closest = observer.get_k_closest(PREY,self.posn,1)
+        if len(k_closest) > 0 and self.posn == k_closest[0]:
             r = self.reward
             self.epsilon *= (1.0-self.epsilon_decay_per_epoch)
         else:

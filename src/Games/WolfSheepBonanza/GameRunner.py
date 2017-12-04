@@ -7,10 +7,12 @@ import random
 from matplotlib import pyplot as plt
 
 from SmartPrey import SmartPrey
-# from Predator import Predator
+
+sys.path.append('../PredatorPreyMultiSheep')
+from Predator import Predator
 
 sys.path.append('../PredatorPreyBaseline')
-from Predator import Predator as BaselinePredator
+from BaselinePredator import Predator as BaselinePredator
 
 sys.path.append('../../Grid')
 from GridConstants import *
@@ -20,7 +22,7 @@ from RunConditions import TimeLimitConditions
 from OverlapTracker import OverlapTracker
 
 
-TIME_LIMIT = 10
+TIME_LIMIT = 50
 SHEEP_NUM = 5
 WOLF_NUM = 2
 MAX_VISIBILITY = 10
@@ -44,8 +46,34 @@ def init_world(wolves):
     world.add_rule(spawn_sheep_rule)
     return world
 
-def train_wolves(save_q = False):
-    pass
+def train_wolves(episodes, make_gif = True, save_q=False):
+    """Train a set of wolves.
+    Args:
+        episodes: The number of games the wolves should play for training.
+        make_gif: Whether a gif should be made of the final product.
+        save_q: Whether the q_matrix should be saved.
+    Returns: List of scores.
+    """
+    # Init the wolves.
+    wolves = []
+    start_posns = get_random_posns(WOLF_NUM)
+    for actor_id in range(WOLF_NUM):
+        wolf = Predator(actor_id, start_posns[actor_id],
+                        [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100]], [[-135, -90, -45, 0, 45, 90, 135, 180]], # predator info
+                        [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100]], [[-135, -90, -45, 0, 45, 90, 135, 180]], # prey info
+                        [[]],[[]], # obstacle info
+                        [[1, 2, 3, 4, 5, 10, 100],[1,2,3,4,5,10]]) # wall info
+        wolves.append(wolf)
+
+    # Train the wolves.
+    scores = []
+    for ep in range(episodes):
+        score = evaluate(wolves)
+        scores.append(score)
+        print('Finished episode %d w/ score %d' % (ep + 1, score))
+    if make_gif:
+        evaluate(wolves, make_gif)
+    return scores
 
 def evaluate(wolves, make_gif = False):
     """Evaluate any given wolf team.
@@ -94,7 +122,8 @@ def get_random_posns(num_posns):
     return list(seen)
 
 def run():
-    print(test_baseline(10, True))
+    # print(test_baseline(10, True))
+    train_wolves(1000)
 
 if __name__ == '__main__':
     run()

@@ -3,7 +3,7 @@
 import sys
 from pathlib import Path
 from Prey import Prey
-from Predator import Predator
+from BaselinePredator import Predator
 sys.path.append('../../Grid')
 from GridConstants import *
 from GridWorld import GridWorld

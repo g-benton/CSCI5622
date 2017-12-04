@@ -56,6 +56,8 @@ class GridObserver:
             posn: The (x, y) tuple position of where to look.
         Returns: The list (x, y) tuple position of the closest actor.
         """
+        if name not in self.actors:
+            return []
         ids = self.actors[name].keys()
         posns = [self.grid.actor_to_posn[i] for i in ids]
         dists = [(np.linalg.norm(np.subtract(posn, p)), p) for p in posns]
