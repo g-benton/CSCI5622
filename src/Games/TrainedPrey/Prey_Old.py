@@ -48,7 +48,7 @@ class Prey(Actor):
         """
         # get state and extract the q matrix values #
         state = self.get_state(observer)
-        q = self.q_mat[int(state), :].tolist()
+        q = self.q_mat[int(state), :].tolist()[0]
 
         # can't have negative probs, so scale everything to be nonnegative
         q = [i + min(q) for i in q]
@@ -106,8 +106,8 @@ class Prey(Actor):
 
         if state == self._dist_to_state_index([0,0]):
             # if the prey and predator are overlapping then HUGE negative reward
-            r = -100
-            self.epsilon *= 0.99
+            r = -1000
+            self.epsilon *=0.99
         else:
             # otherwise give the prey something for continiuing to be alive.
             r = 0.1
