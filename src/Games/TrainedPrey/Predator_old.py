@@ -46,7 +46,7 @@ class Predator(Actor):
 
     def act(self, observer):
         state = self.get_state(observer)
-        q = self.q_mat[int(state),:].tolist()
+        q = self.q_mat[int(state),:].tolist()[0]
         max_q = max(q)
         if random.random() < self.epsilon:
             probs = [i + (max_q + 0.01)*np.random.rand() for i in q]

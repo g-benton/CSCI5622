@@ -38,3 +38,19 @@ class NoPreyConditions:
             return False
         else:
             return True
+
+
+class CombinedConditions:
+
+    def __init__(self, step_limit):
+        self.step_limit = step_limit
+
+    def is_running(self, grid_info):
+
+        self.step_limit -= 1
+        prey_actors = grid_info.get_actor_type(PREY)
+
+        if len(prey_actors) == 0 or self.step_limit < 0:
+            return False
+        else:
+            return True

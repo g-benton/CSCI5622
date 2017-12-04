@@ -44,6 +44,11 @@ def train_pred(game_count):
     """ Runs game_count number of games to train a single predator """
     grid_dim = 20
 
+    # actor_id, start_posn,
+    # wolf_r_divides, wolf_theta_divides,
+    # sheep_r_divides, sheep_theta_divides,
+    # wall_r_divides):
+
     wolf = Predator(2, (0, 0),
                     [[]], [[]],
                     [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100]], [[-135, -90, -45, 0, 45, 90, 135, 180]],
