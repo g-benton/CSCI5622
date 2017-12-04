@@ -27,6 +27,8 @@ class GridObserver:
             name: The name of the actor (e.g. Prey, Predator).
         Returns: List of tuple locations (x, y).
         """
+        if name not in self.actors:
+            return []
         ids = self.actors[name].keys()
         return [self.grid.actor_to_posn[i] for i in ids]
 
@@ -37,6 +39,8 @@ class GridObserver:
             posn: The (x, y) tuple position of where to look.
         Returns: The (x, y) tuple position of the closest actor.
         """
+        if name not in self.actors:
+            return None
         ids = self.actors[name].keys()
         posns = [self.grid.actor_to_posn[i] for i in ids]
         dists = [(np.linalg.norm(np.subtract(posn, p)), p) for p in posns]
