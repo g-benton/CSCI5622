@@ -65,6 +65,14 @@ class GridObserver:
         top_k = dists[:k]
         return [top_actor[1] for top_actor in top_k]
 
+    def is_occupied(self, posn):
+        """Check if location is occupied by some actor.
+        Args:
+            posn: The position to check.
+        Returns: True or False.
+        """
+        return posn in self.grid.posn_to_actor
+
 if __name__ == '__main__':
 
     dists = [0,1,2]

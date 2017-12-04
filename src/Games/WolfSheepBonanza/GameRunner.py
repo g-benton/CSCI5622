@@ -20,7 +20,7 @@ from RunConditions import TimeLimitConditions
 
 
 TIME_LIMIT = 100
-SHEEP_NUM = 5
+SHEEP_NUM = 10
 WOLF_NUM = 2
 MAX_VISIBILITY = 10
 GRID_SIZE = (25, 25)
@@ -35,7 +35,9 @@ def init_world(wolves):
     for wolf in wolves:
         world.add_actor(wolf, wolf.posn)
     # Anonymous function that tells us how to make new sheep.
-    sheep_producer = lambda act_id, start_loc: SmartPrey(act_id, start_loc)
+    sheep_producer = lambda act_id, start_loc: SmartPrey(act_id, start_loc,
+                                                         GRID_SIZE,
+                                                         visibility = 10)
     spawn_sheep_rule = SpawnNewActorRule(PREY, sheep_producer,
                                          actor_threshold=SHEEP_NUM)
     world.add_rule(spawn_sheep_rule)

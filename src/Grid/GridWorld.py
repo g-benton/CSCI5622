@@ -82,10 +82,15 @@ class GridWorld:
         """Do one time step in our simulation."""
         # update number of moves
         self.moves_in_game += 1
-        # Have all the actors act.
+        # Have all the actors propose actions.
+        id_to_action = {}
         for actor_type in self.actors.keys():
             for actor in self.actors[actor_type].values():
-                action = actor.act(self.observer)
+                id_to_action[actor.actor_id] = actor.act(self.observer)
+        # Have actors try to take those actions.
+        for actor_type in self.actors.keys():
+            for actor in self.actors[actor_type].values():
+                action = id_to_action[actor.actor_id]
                 new_posn = self.grid.move_actor(actor, action)
                 actor.update_posn(new_posn)
         # Have all actors get feeback on their actions.
