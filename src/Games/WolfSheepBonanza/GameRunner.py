@@ -17,13 +17,14 @@ from GridConstants import *
 from GridRules import SpawnNewActorRule
 from GridWorld import GridWorld
 from RunConditions import TimeLimitConditions
+from OverlapTracker import OverlapTracker
 
 
-TIME_LIMIT = 100
-SHEEP_NUM = 10
+TIME_LIMIT = 10
+SHEEP_NUM = 5
 WOLF_NUM = 2
 MAX_VISIBILITY = 10
-GRID_SIZE = (25, 25)
+GRID_SIZE = (5, 5)
 
 def init_world(wolves):
     """Initialize the world ready to run.
@@ -55,8 +56,9 @@ def evaluate(wolves, make_gif = False):
     """
     world = init_world(wolves)
     time_limit = TimeLimitConditions(TIME_LIMIT)
-    world.run_simulation(time_limit, visualize=make_gif)
-    return -1
+    tracker = OverlapTracker()
+    world.run_simulation(time_limit, visualize=make_gif, overlap_tracker=tracker)
+    return tracker.get_num_overlaps()
 
 def test_baseline(num_sims, make_gif = False):
     """Test the world with the baseline wolves.
@@ -92,7 +94,7 @@ def get_random_posns(num_posns):
     return list(seen)
 
 def run():
-    test_baseline(0, True)
+    print(test_baseline(10, True))
 
 if __name__ == '__main__':
     run()

@@ -57,29 +57,32 @@ class GridWorld:
         """
         self.rules.append(rule)
 
-    def run_simulation(self, condition, visualize=False):
+    def run_simulation(self, condition, visualize=False, overlap_tracker=None):
         """Runs the simulations while the condtion is true.
         Args:
             condition: Condition object that tells how long to train.
             visualize: Whether to visualize the output.
+            overlap_tracker: Tracker object to track num prey captured.
         """
         # TODO: Figure out what info should be passed to condition, none needed
         # for now.
         if visualize:
             history = []
         while condition.is_running(self.observer):
-            self._step()
+            self._step(overlap_tracker)
             if visualize:
                 history.append(self._history_snapshot())
         # The simulation has ended, now simulate!
-        # print(self.actors)
         if visualize:
             viz = GridVisualizer(self.grid.grid_dim[0], len(history) - 1,
                                  VIZ_SPEED, history)
             viz.display()
 
-    def _step(self):
-        """Do one time step in our simulation."""
+    def _step(self, overlap_tracker=None):
+        """Do one time step in our simulation.
+        Args:
+            overlap_tracker: Tracker object to track num prey captured.
+        """
         # update number of moves
         self.moves_in_game += 1
         # Have all the actors propose actions.
@@ -94,13 +97,13 @@ class GridWorld:
                 new_posn = self.grid.move_actor(actor, action)
                 actor.update_posn(new_posn)
         # Have all actors get feeback on their actions.
-        # print("good1")
         for actor_type in self.actors.keys():
             for actor in self.actors[actor_type].values():
                 actor.give_feedback(self.observer)
         # Remove the actors that have been overlapped.
-        # print("good2")
         removed = self.grid.remove_overlapped()
+        if overlap_tracker is not None:
+            overlap_tracker.add(len(removed))
         for rem in removed:
             for actor_dic in self.actors.values():
                 if rem in actor_dic:
@@ -108,9 +111,6 @@ class GridWorld:
         # Execute the rules.
         for rule in self.rules:
             rule.update_if_valid(self)
-
-
-        # print("good3")
 
     def _history_snapshot(self):
         """Take a snapshot of the current state of the actors with their posns.

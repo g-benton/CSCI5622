@@ -33,10 +33,12 @@ class SpawnNewActorRule:
         """
         # See if we should spawn an actor because of threshold requirement.
         if self.actor_threshold is not None:
-            if (len(grid_world.observer.get_actor_type(self.actor_name))
-                < self.actor_threshold):
-                self._spawn_actor(grid_world)
-                return True
+            actors_to_add = (self.actor_threshold
+                - len(grid_world.observer.get_actor_type(self.actor_name)))
+            if actors_to_add > 0:
+                for _ in range(actors_to_add):
+                    self._spawn_actor(grid_world)
+                    return True
         # See if we should span an actor because of time interval.
         if self.time_interval is not None:
             self.time_counter += 1
