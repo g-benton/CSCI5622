@@ -22,11 +22,11 @@ from RunConditions import TimeLimitConditions
 from OverlapTracker import OverlapTracker
 
 
-TIME_LIMIT = 50
-SHEEP_NUM = 5
+TIME_LIMIT = 1000
+SHEEP_NUM = 1
 WOLF_NUM = 2
 MAX_VISIBILITY = 10
-GRID_SIZE = (5, 5)
+GRID_SIZE = (10, 10)
 
 def init_world(wolves):
     """Initialize the world ready to run.
@@ -59,10 +59,11 @@ def train_wolves(episodes, make_gif = True, save_q=False):
     start_posns = get_random_posns(WOLF_NUM)
     for actor_id in range(WOLF_NUM):
         wolf = Predator(actor_id, start_posns[actor_id],
-                        [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100]], [[-135, -90, -45, 0, 45, 90, 135, 180]], # predator info
-                        [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100]], [[-135, -90, -45, 0, 45, 90, 135, 180]], # prey info
+                        [[1, 2, 3, 4, 5, 100]], [[-135, -90, -45, 0, 45, 90, 135, 180]], # predator info
+                        [[1, 2, 3, 4, 5, 100] for _ in range(2)],
+                        [[-135, -90, -45, 0, 45, 90, 135, 180] for _ in range(2)], # prey info
                         [[]],[[]], # obstacle info
-                        [[1, 2, 3, 4, 5, 10, 100],[1,2,3,4,5,10]]) # wall info
+                        [[1, 2, 3, 10]]) # wall info
         wolves.append(wolf)
 
     # Train the wolves.
@@ -123,7 +124,7 @@ def get_random_posns(num_posns):
 
 def run():
     # print(test_baseline(10, True))
-    train_wolves(1000)
+    train_wolves(50)
 
 if __name__ == '__main__':
     run()

@@ -19,7 +19,7 @@ def _make_basis_matrix(wolf_r_divides,wolf_theta_divides,
     wall_states_mat = [4*len(r) + 1 for r in wall_r_divides]
 
     states_mat = wolf_states_mat + sheep_states_mat + obs_states_mat + wall_states_mat
-
+    # print(states_mat)
     # make an array that acts as a basis to hash states to a state index
     basis = np.cumprod(states_mat)
     num_states = int(basis[-1])
@@ -79,9 +79,9 @@ class Predator(Actor):
         self.q_mat = np.array(self.states*[len(self.actions)*[0.0]])
         self.prev_state = int(-1)
         self.prev_action = int(-1)
-        self.alpha = 0.1 # learning rate (consider how random the process is)
-        self.gamma = 0.5 # percent propogated back in Q-matrix equation (consider size of state space)
-        self.epsilon = 0.5 # percentage of time spent exploring
+        self.alpha = 0.7 # learning rate (consider how random the process is)
+        self.gamma = 0.8 # percent propogated back in Q-matrix equation (consider size of state space)
+        self.epsilon = 0.25 # percentage of time spent exploring
         self.epsilon_decay_per_epoch = 0.01 # decay of epsilon each time the sheep is killed
         self.reward = 10000.0 # reward function (arbitrary)
         self.moves = 0 # moves taken by the predator
@@ -176,7 +176,9 @@ class Predator(Actor):
 
         # extract the "a" matrix, which is the coefficients of a number in base (self.basis_mat)
         a = np.array(wolf_coefs + sheep_coefs + obs_coefs + wall_coefs)
-
+        # print(wolf_coefs)
+        # print(a)
+        # print(self.basis_mat)
         return np.dot(a,self.basis_mat)
 
     def _distance_to_coefs(self,r_divides_list,theta_divides_list,distances):
@@ -221,6 +223,6 @@ if __name__ == '__main__':
 
     sheep_r = 100
     r_divides = [1,2,5,10,20]
-    print(r_divides[1:])
+    # print(r_divides[1:])
     test = next((ii for (ii, r_divide) in enumerate(r_divides) if sheep_r <= r_divide), -1)
-    print(test)
+    # print(test)
