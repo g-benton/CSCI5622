@@ -49,8 +49,8 @@ def train_prey(game_count):
                     [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100]], [[-135, -90, -45, 0, 45, 90, 135, 180]],
                     [[1, 2, 3, 4, 5, 10, 100],[1,2,3,4,5,10]])
 
-    # sheep.read_q("./sheep_q_mat.npy")
-    # wolf.read_q("./wolf_q_mat.npy")
+    #sheep.read_q("./sheep_q_mat_500k.npy")
+    #wolf.read_q("./wolf_q_mat_500k.npy")
 
     # XXX there is an error in using this, see line 49 in predator.py XXX #
     # wolf.read_q("./wolf_q_mat_50k_training.npy")
@@ -89,8 +89,8 @@ def train_prey(game_count):
     world.add_actor(sheep, (19, 19))
 
 
-    sheep.write_q("sheep_q_mat_50k")
-    wolf.write_q("wolf_q_mat_50k")
+    sheep.write_q("sheep_q_mat_alpha_0.5_gamma_0.8_10k")
+    wolf.write_q("wolf_q_mat_alpha_0.5_gamma_0.8_10k")
 
     # condition = TimeLimitConditions(1000)
     # condition = NoPreyConditions()
@@ -103,4 +103,4 @@ if __name__ == '__main__':
     # run_sim()
     # is this going to work? #
 
-    train_prey(50000)
+    train_prey(1000)
