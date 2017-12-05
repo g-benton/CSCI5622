@@ -59,11 +59,10 @@ def train_wolves(episodes, make_gif = True, save_q=False):
     start_posns = get_random_posns(WOLF_NUM)
     for actor_id in range(WOLF_NUM):
         wolf = Predator(actor_id, start_posns[actor_id],
-                        [[1, 2, 3, 4, 5, 100]], [[-135, -90, -45, 0, 45, 90, 135, 180]], # predator info
-                        [[1, 2, 3, 4, 5, 100] for _ in range(2)],
-                        [[-135, -90, -45, 0, 45, 90, 135, 180] for _ in range(2)], # prey info
+                        [[]], [[]], # predator info
+                        [[100]],[[-135, -45, 45, 135]], # prey info
                         [[]],[[]], # obstacle info
-                        [[1, 2, 3, 10]]) # wall info
+                        [[]]) # wall info
         wolves.append(wolf)
 
     # Train the wolves.

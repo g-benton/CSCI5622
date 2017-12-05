@@ -79,8 +79,8 @@ class Predator(Actor):
         self.q_mat = np.array(self.states*[len(self.actions)*[0.0]])
         self.prev_state = int(-1)
         self.prev_action = int(-1)
-        self.alpha = 0.7 # learning rate (consider how random the process is)
-        self.gamma = 0.8 # percent propogated back in Q-matrix equation (consider size of state space)
+        self.alpha = 0.9 # learning rate (consider how random the process is)
+        self.gamma = 0.25 # percent propogated back in Q-matrix equation (consider size of state space)
         self.epsilon = 0.25 # percentage of time spent exploring
         self.epsilon_decay_per_epoch = 0.01 # decay of epsilon each time the sheep is killed
         self.reward = 10000.0 # reward function (arbitrary)
@@ -158,6 +158,7 @@ class Predator(Actor):
             float(1.0-self.alpha)*float(self.q_mat[self.prev_state,self.prev_action]) + \
             float(self.alpha)*float(r + self.gamma*self.q_mat[state].max())
 
+        print(self.q_mat)
     def write_q(self,outfile):
         np.save(outfile, self.q_mat)
 
