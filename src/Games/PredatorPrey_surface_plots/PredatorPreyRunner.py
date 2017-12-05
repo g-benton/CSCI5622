@@ -182,7 +182,7 @@ if __name__ == '__main__':
                                        epsilon=None, gamma=gamma, wolf_start=(0, 0), grid_dim=20,
                                        sheep_start=(19, 19))
         total_info.append(info)
-    plot_info("Average Moves Over Time for Variable Epsilon", "Number of Iterations", "Average Number of Moves",
+    plot_info("Average Moves Over Time for Variable Gamma", "Number of Iterations", "Average Number of Moves",
               range(10000), total_info, 0, 1)
 
     # now the surface plot of average moves at steady state for variable gamma and epsilon
