@@ -2,18 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="570c935a-ed68-4367-88e0-28185ceb409a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Games/PredatorPrey_surface_plots/wolf_q_mat.npy" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Games/PredatorPrey_surface_plots/wolf_q_mat_50k_training.npy" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Games/PredatorPrey_surface_plots/.idea/PredatorPrey.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Games/PredatorPrey_surface_plots/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Games/PredatorPrey_surface_plots/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Games/PredatorPrey_surface_plots/.idea/workspace.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Games/PredatorPrey_surface_plots/Predator.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Games/PredatorPrey_surface_plots/PredatorPreyRunner.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Games/PredatorPrey_surface_plots/Prey.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/CSCI5622.iml" afterPath="$PROJECT_DIR$/.idea/CSCI5622.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Games/PredatorPrey_surface_plots/PredatorPreyRunner.py" afterPath="$PROJECT_DIR$/src/Games/PredatorPrey_surface_plots/PredatorPreyRunner.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -27,8 +17,8 @@
       <file leaf-file-name="PredatorPreyRunner.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Games/PredatorPrey_surface_plots/PredatorPreyRunner.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="296">
-              <caret line="135" column="71" lean-forward="false" selection-start-line="135" selection-start-column="71" selection-end-line="135" selection-end-column="71" />
+            <state relative-caret-position="93">
+              <caret line="163" column="38" lean-forward="true" selection-start-line="163" selection-start-column="38" selection-end-line="163" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -115,13 +105,6 @@
               <item name="CSCI5622" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="Games" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CSCI5622" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CSCI5622" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="Games" type="462c0819:PsiDirectoryNode" />
-              <item name="PredatorPrey_surface_plots" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="CSCI5622" type="b2602c69:ProjectViewProjectNode" />
@@ -273,6 +256,28 @@
       <option name="presentableId" value="Default" />
       <updated>1511749650262</updated>
     </task>
+    <task id="LOCAL-00001" summary="surface-plt">
+      <created>1512441376582</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1512441376582</updated>
+    </task>
+    <task id="LOCAL-00002" summary="I set some good parameters, now greg just has to download and run it on his comp">
+      <created>1512442068328</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1512442068328</updated>
+    </task>
+    <task id="LOCAL-00003" summary="I set some good parameters, now greg just has to download and run it on his comp">
+      <created>1512442187200</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1512442187200</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -301,6 +306,11 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="surface-plt" />
+    <MESSAGE value="I set some good parameters, now greg just has to download and run it on his comp" />
+    <option name="LAST_COMMIT_MESSAGE" value="I set some good parameters, now greg just has to download and run it on his comp" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -575,8 +585,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Games/PredatorPrey_surface_plots/PredatorPreyRunner.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="135" column="71" lean-forward="false" selection-start-line="135" selection-start-column="71" selection-end-line="135" selection-end-column="71" />
+        <state relative-caret-position="93">
+          <caret line="163" column="38" lean-forward="true" selection-start-line="163" selection-start-column="38" selection-end-line="163" selection-end-column="38" />
           <folding />
         </state>
       </provider>

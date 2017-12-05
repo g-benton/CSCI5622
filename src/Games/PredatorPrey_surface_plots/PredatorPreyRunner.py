@@ -161,7 +161,7 @@ if __name__ == '__main__':
     # yes it is
 
     # vanilla plot
-    info = average_moves_over_time(5, 10000,
+    info = average_moves_over_time(5, 10**5,
                             epsilon = None, gamma = None, wolf_start = (0,0), grid_dim = 20, sheep_start = (19,19))
     plot_info("Average_Moves_Over_time", "Number of Iterations", "Average Number of Moves",
               range(10000), info, 0, 1)
@@ -169,7 +169,7 @@ if __name__ == '__main__':
     # a few plots of average moves per iteration trained for variable epsilon
     total_info = []
     for epsilon in [.1*i for i in range(10)]:
-        info = average_moves_over_time(5, 10000,
+        info = average_moves_over_time(5, 10**5,
                                        epsilon=epsilon, gamma=None, wolf_start=(0, 0), grid_dim=20, sheep_start=(19, 19))
         total_info.append(info)
     plot_info("Average Moves Over Time for Variable Epsilon", "Number of Iterations", "Average Number of Moves",
@@ -178,7 +178,7 @@ if __name__ == '__main__':
     # a few plots of average moves per iteration trained for variable gamma
     total_info = []
     for gamma in [.1 * i for i in range(10)]:
-        info = average_moves_over_time(5, 10000,
+        info = average_moves_over_time(5, 10**5,
                                        epsilon=None, gamma=gamma, wolf_start=(0, 0), grid_dim=20,
                                        sheep_start=(19, 19))
         total_info.append(info)
