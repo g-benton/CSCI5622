@@ -32,24 +32,30 @@ class Predator(Actor):
                  wolf_r_divides, wolf_theta_divides,
                  sheep_r_divides, sheep_theta_divides,
                  obs_r_divides,obs_theta_divides,
-                 wall_r_divides):
+                 wall_r_divides, penalty_fraction=0.01,
+                 alpha=0.01, gamma=0.8, epsilon=0.25,
+                 epsilon_decay_per_epoch=0.01):
+        """
+        theta_divides is a list of lists. The predator can determine that the K^th closest sheep is
+        in between any of the angles in list K, but it has no more precision than that.
 
-        # theta_divides is a list of lists. The predator can determine that the K^th closest sheep is
-        # in between any of the angles in list K, but it has no more precision than that.
+        r_divides is the same as theta_divides, but for distances (I used the 2-norm). In addition, the predator
+        cannot see beyond the distance that is the last element of r_divides.
 
-        # r_divides is the same as theta_divides, but for distances (I used the 2-norm). In addition, the predator
-        # cannot see beyond the distance that is the last element of r_divides.
+        wall_r_divides is the same as r_divides, but with the closest wall. Therefore, the information that the
+        predator gets is (direction, distance_index) for the n closest walls, where n is the length of wall_divides
 
-        # wall_r_divides is the same as r_divides, but with the closest wall. Therefore, the information that the
-        # predator gets is (direction, distance_index) for the n closest walls, where n is the length of wall_divides
+        in total, the predator will get a list of tuples, (direction, distance), for each sheep and the closest wall.
+        This will be the input into the state space, so the size of the Q-matrix is:
 
-        # in total, the predator will get a list of tuples, (direction, distance), for each sheep and the closest wall.
-        # This will be the input into the state space, so the size of the Q-matrix is:
-        #
-        #  ((# of directions)*(# of distances) + 1)^(# of actors + # of walls).
-        #
-        # The +1 in the exponent comes from finding the location of the wall. The other +1 comes from if the predator
-        # can't see the sheep/wall. This can get pretty big as we put in more actors.
+         ((# of directions)*(# of distances) + 1)^(# of actors + # of walls).
+
+        The +1 in the exponent comes from finding the location of the wall. The other +1 comes from if the predator
+        can't see the sheep/wall. This can get pretty big as we put in more actors.
+
+        The penalty fraction is the fraction of the reward that is used for
+        penalty if the predator is not catching anything currently.
+        """
 
         super().__init__(actor_id, start_posn, PREDATOR, True)
 
@@ -78,11 +84,16 @@ class Predator(Actor):
         self.q_mat = np.array(self.states*[len(self.actions)*[0.0]])
         self.prev_state = int(-1)
         self.prev_action = int(-1)
-        self.alpha = 0.01 # learning rate (consider how random the process is)
-        self.gamma = 0.8 # percent propogated back in Q-matrix equation (consider size of state space)
-        self.epsilon = 0.25 # percentage of time spent exploring
-        self.epsilon_decay_per_epoch = 0.01 # decay of epsilon each time the sheep is killed
+        self.alpha = alpha # learning rate (consider how random the process is)
+        self.gamma = gamma # percent propogated back in Q-matrix equation (consider size of state space)
+        self.epsilon = epsilon # percentage of time spent exploring
+        self.epsilon_decay_per_epoch = epsilon_decay_per_epoch# decay of epsilon each time the sheep is killed
         self.reward = 10000.0 # reward function (arbitrary)
+        if (penalty_fraction is not None and penalty_fraction > 0
+            and penalty_fraction < 1):
+            self.penalty = -1 * self.reward * penalty_fraction
+        else:
+            self.penalty = 0
         self.moves = 0 # moves taken by the predator
 
     def get_state(self,observer):
@@ -147,12 +158,13 @@ class Predator(Actor):
         """
         state = self.get_state(observer)
 
-        k_closest = observer.get_k_closest(PREY,self.posn,1)
-        if len(k_closest) > 0 and self.posn == k_closest[0]:
-            r = self.reward
+        # Get the amount of prey captured by all predators.
+        num_captured = len(observer.get_overlapped_posns())
+        if num_captured > 0:
+            r = self.reward * num_captured
             self.epsilon *= (1.0-self.epsilon_decay_per_epoch)
         else:
-            r = -1 * self.reward / 100
+            r = self.penalty
 
         self.q_mat[self.prev_state,self.prev_action] = \
             float(1.0-self.alpha)*float(self.q_mat[self.prev_state,self.prev_action]) + \
