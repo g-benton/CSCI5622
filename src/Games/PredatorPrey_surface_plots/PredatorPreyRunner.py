@@ -136,12 +136,14 @@ def generate_surface_plots(steady_state, smoothness, grid_spacing, gamma_range =
     plt.title("Average Moves to the Kill Per " + str(steady_state) + " interations of training")
     plt.xlabel("Gamma")
     plt.ylabel("Epsilon")
+    plt.savefig("Surface_Plot_"+str(steady_state))
     plt.show()
 
 def plot_info(title_, x_axis, y_xis, x_data, y_data, save, display):
 
     # generate plot
-    plt.plot(x_data, y_data)
+    for i in range(len(y_data[0])):
+        plt.plot(x_data, y_data)
     plt.ylabel(y_xis)
     plt.xlabel(x_axis)
     plt.title(title_)
@@ -157,10 +159,34 @@ if __name__ == '__main__':
     # is this going to work? #
     # train_pred(10)
     # yes it is
-    # info = average_moves_over_time(3, 10000)
-    # plot_info("Average_Moves_Over_time", "Number of Iterations", "Average Number of Moves",
-    #           range(10000), info, 0, 1)
-    steady_state = 2 # number of training iterations
-    smoothness = 2 # how much averaging to do
-    grid_spacing = 4 # number of evaluations for gamma and epsilon
+
+    # vanilla plot
+    info = average_moves_over_time(5, 10000,
+                            epsilon = None, gamma = None, wolf_start = (0,0), grid_dim = 20, sheep_start = (19,19))
+    plot_info("Average_Moves_Over_time", "Number of Iterations", "Average Number of Moves",
+              range(10000), info, 0, 1)
+
+    # a few plots of average moves per iteration trained for variable epsilon
+    total_info = []
+    for epsilon in [.1*i for i in range(10)]:
+        info = average_moves_over_time(5, 10000,
+                                       epsilon=epsilon, gamma=None, wolf_start=(0, 0), grid_dim=20, sheep_start=(19, 19))
+        total_info.append(info)
+    plot_info("Average Moves Over Time for Variable Epsilon", "Number of Iterations", "Average Number of Moves",
+                  range(10000), total_info, 0, 1)
+
+    # a few plots of average moves per iteration trained for variable gamma
+    total_info = []
+    for gamma in [.1 * i for i in range(10)]:
+        info = average_moves_over_time(5, 10000,
+                                       epsilon=None, gamma=gamma, wolf_start=(0, 0), grid_dim=20,
+                                       sheep_start=(19, 19))
+        total_info.append(info)
+    plot_info("Average Moves Over Time for Variable Epsilon", "Number of Iterations", "Average Number of Moves",
+              range(10000), total_info, 0, 1)
+
+    # now the surface plot of average moves at steady state for variable gamma and epsilon
+    steady_state = 10**5 # number of training iterations (steady state)
+    smoothness = 10 # how much averaging to do
+    grid_spacing = 25 # number of evaluations for gamma and epsilon
     generate_surface_plots(steady_state, smoothness, grid_spacing, gamma_range=[0, 1], epsilon_range=[0, 1])
