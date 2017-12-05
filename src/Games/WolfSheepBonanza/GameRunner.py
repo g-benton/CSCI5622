@@ -23,10 +23,10 @@ from OverlapTracker import OverlapTracker
 
 
 TIME_LIMIT = 1000
-SHEEP_NUM = 1
+SHEEP_NUM = 3
 WOLF_NUM = 2
 MAX_VISIBILITY = 10
-GRID_SIZE = (10, 10)
+GRID_SIZE = (5, 5)
 
 def init_world(wolves):
     """Initialize the world ready to run.
@@ -59,8 +59,9 @@ def train_wolves(episodes, make_gif = True, save_q=False):
     start_posns = get_random_posns(WOLF_NUM)
     for actor_id in range(WOLF_NUM):
         wolf = Predator(actor_id, start_posns[actor_id],
-                        [[]], [[]], # predator info
-                        [[100]],[[-135, -45, 45, 135]], # prey info
+                        [[100]],[[-135, -45, 45, 135]], # predator info
+                        [[100] for _ in range(3)],
+                        [[-135, -45, 45, 135] for _ in range(3)], # prey info
                         [[]],[[]], # obstacle info
                         [[]]) # wall info
         wolves.append(wolf)
@@ -122,8 +123,8 @@ def get_random_posns(num_posns):
     return list(seen)
 
 def run():
-    # print(test_baseline(10, True))
-    train_wolves(50)
+    print(test_baseline(10, True))
+    # train_wolves(50)
 
 if __name__ == '__main__':
     run()
