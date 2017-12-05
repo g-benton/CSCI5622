@@ -81,8 +81,8 @@ class Predator(Actor):
         self.prev_action = int(-1)
         self.alpha = 0.7 # learning rate (consider how random the process is)
         self.gamma = 0.8 # percent propogated back in Q-matrix equation (consider size of state space)
-        self.epsilon = 0.25 # percentage of time spent exploring
-        self.epsilon_decay_per_epoch = 0.01 # decay of epsilon each time the sheep is killed
+        self.epsilon = 0.5 # percentage of time spent exploring
+        self.epsilon_decay_per_epoch = 0.75 # decay of epsilon each time the sheep is killed
         self.reward = 10000.0 # reward function (arbitrary)
         self.moves = 0 # moves taken by the predator
 

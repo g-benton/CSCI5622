@@ -71,7 +71,13 @@ def train_wolves(episodes, make_gif = True, save_q=False):
     for ep in range(episodes):
         score = evaluate(wolves)
         scores.append(score)
-        print('Finished episode %d w/ score %d' % (ep + 1, score))
+        if ep > 10:
+            roll_avg = sum(scores[-10:])/len(scores[-10:])
+            print('Finished episode %d w/ score %d, rolling average %f'\
+                 % (ep + 1, score, roll_avg))
+        else:
+            print('Finished episode %d w/ score %d'\
+                 % (ep + 1, score) )
     if make_gif:
         evaluate(wolves, make_gif)
     return scores
@@ -124,7 +130,7 @@ def get_random_posns(num_posns):
 
 def run():
     # print(test_baseline(10, True))
-    train_wolves(50)
+    train_wolves(500)
 
 if __name__ == '__main__':
     run()
