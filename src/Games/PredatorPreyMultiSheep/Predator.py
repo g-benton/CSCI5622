@@ -34,7 +34,8 @@ class Predator(Actor):
                  obs_r_divides,obs_theta_divides,
                  wall_r_divides, penalty_fraction=0.01,
                  alpha=0.01, gamma=0.8, epsilon=0.25,
-                 epsilon_decay_per_epoch=0.01):
+                 epsilon_decay_per_epoch=0.01,
+                 min_epsilon=0):
         """
         theta_divides is a list of lists. The predator can determine that the K^th closest sheep is
         in between any of the angles in list K, but it has no more precision than that.
@@ -84,17 +85,11 @@ class Predator(Actor):
         self.q_mat = np.array(self.states*[len(self.actions)*[0.0]])
         self.prev_state = int(-1)
         self.prev_action = int(-1)
-<<<<<<< HEAD
-        self.alpha = 0.01 # learning rate (consider how random the process is)
-        self.gamma = 0.8 # percent propogated back in Q-matrix equation (consider size of state space)
-        self.epsilon = 0.5 # percentage of time spent exploring
-        self.epsilon_decay_per_epoch = 0.75 # decay of epsilon each time the sheep is killed
-=======
         self.alpha = alpha # learning rate (consider how random the process is)
         self.gamma = gamma # percent propogated back in Q-matrix equation (consider size of state space)
         self.epsilon = epsilon # percentage of time spent exploring
         self.epsilon_decay_per_epoch = epsilon_decay_per_epoch# decay of epsilon each time the sheep is killed
->>>>>>> 516f9f28b273ae4fb0643f31aa4c763d24805e1f
+        self.min_epsilon = min_epsilon
         self.reward = 10000.0 # reward function (arbitrary)
         if (penalty_fraction is not None and penalty_fraction > 0
             and penalty_fraction < 1):
@@ -169,7 +164,8 @@ class Predator(Actor):
         num_captured = len(observer.get_overlapped_posns())
         if num_captured > 0:
             r = self.reward * num_captured
-            self.epsilon *= (1.0-self.epsilon_decay_per_epoch)
+            if self.epsilon > self.min_epsilon:
+                self.epsilon *= (1.0-self.epsilon_decay_per_epoch)
         else:
             r = self.penalty
 

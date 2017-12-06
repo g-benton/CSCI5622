@@ -26,7 +26,7 @@ TIME_LIMIT = 1000
 SHEEP_NUM = 3
 WOLF_NUM = 2
 MAX_VISIBILITY = 10
-GRID_SIZE = (5, 5)
+GRID_SIZE = (10,10)
 
 # Learning Parameters
 # learning rate (consider how random the process is)
@@ -37,8 +37,10 @@ GAMMA = 0.8
 EPSILON = 0.25
 # decay of epsilon each time the sheep is killed
 EPSILON_DECAY = 0.01
+# lower bound for epsilon
+MIN_EPS = 0.001
 # Fraction of reward that should be used as penalty if the wolf makes no capture
-RHO = 0.1
+RHO = 0.2
 
 def init_world(wolves):
     """Initialize the world ready to run.
@@ -71,14 +73,15 @@ def train_wolves(episodes, make_gif = True, save_q=False):
     start_posns = get_random_posns(WOLF_NUM)
     for actor_id in range(WOLF_NUM):
         wolf = Predator(actor_id, start_posns[actor_id],
-                        [[1, 3, 10]],[[-135, -45, 45, 135]], # predator info
-                        [[1, 3, 10] for _ in range(3)],
-                        [[-135, -45, 45, 135] for _ in range(3)], # prey info
+                        [[1,3,5,100]],[[-120, -60, 0, 60, 120]], # predator info
+                        [[1,3,5,100] for _ in range(3)],
+                        [[-120, -60, 0, 60, 120] for _ in range(3)], # prey info
                         [[]],[[]], # obstacle info
                         [[]], # wall info
                         alpha=ALPHA, gamma=GAMMA, epsilon=EPSILON,
                         epsilon_decay_per_epoch=EPSILON_DECAY,
-                        penalty_fraction=RHO)
+                        penalty_fraction=RHO,
+                        min_epsilon=MIN_EPS)
         wolves.append(wolf)
 
     # Train the wolves.
@@ -144,11 +147,11 @@ def get_random_posns(num_posns):
     return list(seen)
 
 def run():
-    # baselines = test_baseline(100)
+    # baselines = test_baseline(0, True)
     # print(sum(baselines) / len(baselines))
     # print(max(baselines))
     # print(min(baselines))
-    trained_scores = train_wolves(100)
+    trained_scores = train_wolves(10000)
     print(sum(trained_scores) / len(trained_scores))
     print(max(trained_scores))
     print(min(trained_scores))
