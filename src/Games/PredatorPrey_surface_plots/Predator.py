@@ -9,7 +9,7 @@ from Actor import Actor
 class Predator(Actor):
     """Simple Predator class."""
 
-    def __init__(self, actor_id, start_posn, dim, epsilon = None, gamma = None):
+    def __init__(self, actor_id, start_posn, dim, epsilon = None, gamma = None, alpha = None):
 
         super().__init__(actor_id, start_posn, PREDATOR, True)
 
@@ -29,12 +29,16 @@ class Predator(Actor):
         else:
             self.gamma = gamma
 
+        # initialize alpha
+        if alpha is None:
+            self.alpha = 0.1
+        else:
+            self.alpha = alpha
+
         self.actions = [NORTH,SOUTH,EAST,WEST,NA]
         self.dim = dim
         self.prev_state = int(-1)
         self.prev_action = int(-1)
-        self.alpha = 0.1
-
 
     def get_state(self,observer):
         """
