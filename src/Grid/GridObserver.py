@@ -75,6 +75,16 @@ class GridObserver:
         """
         return posn in self.grid.posn_to_actor
 
+    def get_overlapped_posns(self):
+        """Return a list of positions that have more than one actor on them.
+        Returns: List of positions represented as tuples.
+        """
+        to_return = []
+        for posn, actors in self.grid.posn_to_actor.items():
+            if len(actors) > 1:
+                to_return.append(posn)
+        return to_return
+
 if __name__ == '__main__':
 
     dists = [0,1,2]

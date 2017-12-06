@@ -28,6 +28,18 @@ WOLF_NUM = 2
 MAX_VISIBILITY = 10
 GRID_SIZE = (5, 5)
 
+# Learning Parameters
+# learning rate (consider how random the process is)
+ALPHA = 0.01
+# percent propogated back in Q-matrix equation (consider size of state space)
+GAMMA = 0.8
+# percentage of time spent exploring
+EPSILON = 0.25
+# decay of epsilon each time the sheep is killed
+EPSILON_DECAY = 0.01
+# Fraction of reward that should be used as penalty if the wolf makes no capture
+RHO = 0.1
+
 def init_world(wolves):
     """Initialize the world ready to run.
     Args:
@@ -59,11 +71,14 @@ def train_wolves(episodes, make_gif = True, save_q=False):
     start_posns = get_random_posns(WOLF_NUM)
     for actor_id in range(WOLF_NUM):
         wolf = Predator(actor_id, start_posns[actor_id],
-                        [[100]],[[-135, -45, 45, 135]], # predator info
-                        [[100] for _ in range(3)],
+                        [[1, 3, 10]],[[-135, -45, 45, 135]], # predator info
+                        [[1, 3, 10] for _ in range(3)],
                         [[-135, -45, 45, 135] for _ in range(3)], # prey info
                         [[]],[[]], # obstacle info
-                        [[]]) # wall info
+                        [[]], # wall info
+                        alpha=ALPHA, gamma=GAMMA, epsilon=EPSILON,
+                        epsilon_decay_per_epoch=EPSILON_DECAY,
+                        penalty_fraction=RHO)
         wolves.append(wolf)
 
     # Train the wolves.
@@ -129,8 +144,14 @@ def get_random_posns(num_posns):
     return list(seen)
 
 def run():
-    print(test_baseline(10, True))
-    # train_wolves(50)
+    # baselines = test_baseline(100)
+    # print(sum(baselines) / len(baselines))
+    # print(max(baselines))
+    # print(min(baselines))
+    trained_scores = train_wolves(100)
+    print(sum(trained_scores) / len(trained_scores))
+    print(max(trained_scores))
+    print(min(trained_scores))
 
 if __name__ == '__main__':
     run()
