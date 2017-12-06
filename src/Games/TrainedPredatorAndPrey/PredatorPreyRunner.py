@@ -103,4 +103,4 @@ if __name__ == '__main__':
     # run_sim()
     # is this going to work? #
 
-    train_prey(2000)
+    train_prey(500)

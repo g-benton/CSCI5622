@@ -2,6 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+import matplotlib.patches as mpatches
 from matplotlib.colors import ListedColormap
 import copy
 import sys
@@ -60,11 +61,18 @@ class GridVisualizer:
 
     def display(self):
         fig, ax = plt.subplots()
-
+        values = [1,2]
+        labels = list(self.location_info[0].keys())
         cmap = ListedColormap(['w', 'r', 'b', 'g', 'k'])
         self.draw_grid = ax.matshow(self.grid, cmap = cmap)
-        # plt.colorbar(self.draw_grid)
+        colors = [ self.draw_grid.cmap(self.draw_grid.norm(value)) for value in values]
+        # create a patch (proxy artist) for every color
+        patches = [ mpatches.Patch(color=colors[i], label= labels[i]) for i in range(len(values)) ]
+        # put those patched as legend-handles into the legend
+        plt.legend(handles=patches, bbox_to_anchor=(0.5, -0.05), loc=9, borderaxespad=0., ncol = 2)
+
         ani = animation.FuncAnimation(fig, self.update_grid, frames=self.frames, interval=self.interval)
+        # plt.legend(['predator', 'prey'], loc=9, bbox_to_anchor=(0.5, -0.1), ncol=2)
         plt.show()
 
 

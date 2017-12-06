@@ -165,17 +165,17 @@ def plot_info(title_, x_axis, y_xis, x_data, y_data, save, display, labels = Non
 if __name__ == '__main__':
     # run_sim()
 
+    steady_state = 5000
+    averaging = 10
     # vanilla plot
-    info = average_moves_over_time(10, 10**5,
+    info = average_moves_over_time(averaging, steady_state,
                             epsilon = None, gamma = None, wolf_start = (0,0), grid_dim = 20, sheep_start = (19,19))
-    plot_info("Average_Moves_Over_time", "Number of Iterations", "Average Number of Moves",
+    plot_info("Average Moves Over Time", "Number of Iterations", "Average Number of Moves",
               linspace(1,len(info),len(info)), [info], 0, 1)
 
     # a few plots of average moves per iteration trained for variable epsilon
     total_info = []
     epsilons = [.1 * i for i in range(11)]
-    steady_state = 10**5
-    averaging = 10
     x_values = [i for i in range(1,steady_state+1)]
     labels_ = ['epsilon = ' + str(ep) for ep in epsilons]
     for epsilon in epsilons:
@@ -188,8 +188,6 @@ if __name__ == '__main__':
     # a few plots of average moves per iteration trained for variable gamma
     total_info = []
     gammas = [.1 * i for i in range(11)]
-    steady_state = 10**5
-    averaging = 10
     x_values = [i for i in range(1,steady_state+1)]
     labels_ = ['gamma = ' + str(ep) for ep in gammas]
     for gamma in gammas:
