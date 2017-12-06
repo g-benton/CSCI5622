@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="570c935a-ed68-4367-88e0-28185ceb409a" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Games/PredatorPrey_surface_plots/PredatorPreyRunner.py" afterPath="$PROJECT_DIR$/src/Games/PredatorPrey_surface_plots/PredatorPreyRunner.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -17,12 +16,15 @@
       <file leaf-file-name="PredatorPreyRunner.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Games/PredatorPrey_surface_plots/PredatorPreyRunner.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="528">
-              <caret line="205" column="23" lean-forward="false" selection-start-line="205" selection-start-column="23" selection-end-line="205" selection-end-column="23" />
+            <state relative-caret-position="175">
+              <caret line="211" column="40" lean-forward="true" selection-start-line="211" selection-start-column="40" selection-end-line="211" selection-end-column="40" />
               <folding>
-                <element signature="e#1433#2576#0" expanded="false" />
-                <element signature="e#2769#3783#0" expanded="false" />
-                <element signature="e#3902#4895#0" expanded="false" />
+                <element signature="e#530#1053#0" expanded="false" />
+                <element signature="e#1174#1353#0" expanded="false" />
+                <element signature="e#1489#2639#0" expanded="false" />
+                <element signature="e#2845#3878#0" expanded="false" />
+                <element signature="e#4019#6008#0" expanded="false" />
+                <element signature="e#6099#6570#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -31,8 +33,8 @@
       <file leaf-file-name="Predator.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Games/PredatorPrey_surface_plots/Predator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="11" column="50" lean-forward="false" selection-start-line="11" selection-start-column="50" selection-end-line="11" selection-end-column="78" />
+            <state relative-caret-position="32">
+              <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -64,8 +66,8 @@
         <option value="$PROJECT_DIR$/src/Games/PredatorPreyBaseline/PredatorPreyRunner.py" />
         <option value="$PROJECT_DIR$/src/Games/PredatorPreyMultiSheep/Predator.py" />
         <option value="$PROJECT_DIR$/src/Games/PredatorPreyMultiSheep/PredatorPreyRunner.py" />
-        <option value="$PROJECT_DIR$/src/Games/PredatorPrey_surface_plots/Predator.py" />
         <option value="$PROJECT_DIR$/src/Grid/GridWorld.py" />
+        <option value="$PROJECT_DIR$/src/Games/PredatorPrey_surface_plots/Predator.py" />
         <option value="$PROJECT_DIR$/src/Games/PredatorPrey_surface_plots/PredatorPreyRunner.py" />
       </list>
     </option>
@@ -90,7 +92,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -119,7 +121,7 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -288,17 +290,24 @@
       <option name="project" value="LOCAL" />
       <updated>1512442587366</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="I set some good parameters, now greg just has to download and run it on his comp">
+      <created>1512537332156</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1512537332156</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25767368" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15105008" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32737276" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35213205" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287483" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287483" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -325,7 +334,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <option name="time" value="2" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -335,9 +344,37 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#1433#2576#0" expanded="false" />
-            <element signature="e#2769#3783#0" expanded="false" />
-            <element signature="e#3902#4895#0" expanded="false" />
+            <element signature="e#530#1053#0" expanded="false" />
+            <element signature="e#1174#1353#0" expanded="false" />
+            <element signature="e#1489#2639#0" expanded="false" />
+            <element signature="e#2845#3878#0" expanded="false" />
+            <element signature="e#4019#6008#0" expanded="false" />
+            <element signature="e#6099#6570#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Games/PredatorPrey_surface_plots/Predator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="11" column="50" lean-forward="false" selection-start-line="11" selection-start-column="50" selection-end-line="11" selection-end-column="78" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Games/PredatorPrey_surface_plots/PredatorPreyRunner.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#530#1053#0" expanded="false" />
+            <element signature="e#1174#1353#0" expanded="false" />
+            <element signature="e#1489#2639#0" expanded="false" />
+            <element signature="e#2845#3878#0" expanded="false" />
+            <element signature="e#4019#6008#0" expanded="false" />
+            <element signature="e#6099#6570#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -544,34 +581,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Grid/Grid2D.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Games/PredatorPrey_surface_plots/.idea/misc.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Grid/GridWorld.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="33" column="45" lean-forward="true" selection-start-line="33" selection-start-column="45" selection-end-line="33" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Games/PredatorPrey_surface_plots/Predator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="11" column="50" lean-forward="false" selection-start-line="11" selection-start-column="50" selection-end-line="11" selection-end-column="78" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -589,14 +602,55 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Games/PredatorPrey_surface_plots/Prey.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Grid/Grid2D.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-180">
+          <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Grid/GridWorld.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="386">
+          <caret line="33" column="45" lean-forward="true" selection-start-line="33" selection-start-column="45" selection-end-line="33" selection-end-column="45" />
+          <folding>
+            <element signature="e#107#118#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Games/PredatorPrey_surface_plots/Predator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="32">
+          <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Games/PredatorPrey_surface_plots/PredatorPreyRunner.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
-          <caret line="205" column="23" lean-forward="false" selection-start-line="205" selection-start-column="23" selection-end-line="205" selection-end-column="23" />
+        <state relative-caret-position="175">
+          <caret line="211" column="40" lean-forward="true" selection-start-line="211" selection-start-column="40" selection-end-line="211" selection-end-column="40" />
           <folding>
-            <element signature="e#1433#2576#0" expanded="false" />
-            <element signature="e#2769#3783#0" expanded="false" />
-            <element signature="e#3902#4895#0" expanded="false" />
+            <element signature="e#530#1053#0" expanded="false" />
+            <element signature="e#1174#1353#0" expanded="false" />
+            <element signature="e#1489#2639#0" expanded="false" />
+            <element signature="e#2845#3878#0" expanded="false" />
+            <element signature="e#4019#6008#0" expanded="false" />
+            <element signature="e#6099#6570#0" expanded="false" />
           </folding>
         </state>
       </provider>
